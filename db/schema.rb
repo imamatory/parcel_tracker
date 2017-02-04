@@ -10,20 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170201201226) do
+ActiveRecord::Schema.define(version: 20170202141016) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "parcels", force: :cascade do |t|
-    t.string   "track_code"
+  create_table "parcel_logs", force: :cascade do |t|
+    t.integer  "parcel_id"
     t.integer  "post_status"
-    t.string   "src_addr"
-    t.string   "dest_addr"
-    t.string   "phone"
-    t.datetime "added_at"
+    t.text     "msg"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["parcel_id"], name: "index_parcel_logs_on_parcel_id", using: :btree
   end
 
+  create_table "parcels", force: :cascade do |t|
+    t.string   "track_code"
+    t.integer  "post_status",                default: 0
+    t.string   "src_addr"
+    t.string   "dest_addr"
+    t.decimal  "phone",       precision: 15
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.index ["track_code"], name: "index_parcels_on_track_code", unique: true, using: :btree
+  end
+
+  add_foreign_key "parcel_logs", "parcels"
 end
