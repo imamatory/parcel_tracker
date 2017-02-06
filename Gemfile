@@ -34,6 +34,8 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'rspec-rails'
 gem 'pg'
+gem 'responders'
+gem 'state_machine'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -41,6 +43,10 @@ gem 'pg'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  gem 'pry-byebug'
+  gem 'graphviz'
+  gem 'ruby-graphviz', :require => 'graphviz'
+  gem 'factory_girl_rails'
 end
 
 group :development do

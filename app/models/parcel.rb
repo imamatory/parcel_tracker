@@ -5,6 +5,8 @@ class Parcel < ApplicationRecord
 
   enum post_status: %i(in_transit arrived received)
 
+  default_scope { order('created_at DESC') }
+
   validates :phone, numericality: { only_integer: true }
   validates :track_code, uniqueness: true
   validates_each :post_status do |record, attr, value|

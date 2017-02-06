@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get 'parcels/info'
+
+  get 'parcels/index'
+
+  get 'parcels/manage'
+
   #resources :parcels
 
   root 'parcels#index'
