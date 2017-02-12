@@ -1,3 +1,28 @@
-// Place all the styles related to the parcel controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+  background-color: #f1f1f1;
+  font-family: Roboto, 'Helvetica Neue', 'Lucida Grande', sans-serif;
+}
+
+.navbar.navbar__custom {
+  background-color: #3367d6;
+  color: white;
+  border: 0;
+  border-radius: 0;
+
+  .navbar-brand {
+    color: white;
+  }
+}
+
+.media.media__custom {
+  color: rgb(117, 117, 117);
+  background-color: #fff;
+  padding: 16px 16px 12px 24px;
+  box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px 0px,
+              rgba(0, 0, 0, 0.12) 0px 1px 5px 0px,
+              rgba(0, 0, 0, 0.2) 0px 3px 1px -2px;
+
+  a {
+    color: rgb(51, 103, 214);
+  }
+}

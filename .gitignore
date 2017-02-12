@@ -88,4 +88,11 @@ Capfile
 .ackrc
 .irb_history
 **.dump
-logfile
+logfile/node_modules
+/app/assets/javascripts/react_bundle.js
+/app/assets/stylesheets/react_bundle.css
+
+/node_modules
+# Added by webpack-rails
+/node_modules
+/public/webpack

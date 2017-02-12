@@ -1,0 +1,17 @@
+{
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true
+    },
+    "plugins": [
+        "react",
+        "jsx-a11y",
+        "import"
+    ],
+    "rules": {
+      "no-param-reassign": [1],
+      "semi": [2, "never"],
+      "no-constant-condition": ["error", { "checkLoops": false }]
+    }
+}
