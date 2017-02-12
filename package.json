@@ -4,7 +4,7 @@
   "description": "Basic isomorphic redux application",
   "main": "webpack/src/index.js",
   "scripts": {
-    "start": "webpack-dev-server --progress --color",
+    "start": "",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Safonov Vadim imamatory@gmail.com",
@@ -51,5 +51,8 @@
     "webpack-dev-middleware": "^1.8.*",
     "webpack-dev-server": "^1.*",
     "webpack-hot-middleware": "^2.13.*"
+  },
+  "engines": {
+    "node": "7.4.0"
   }
 }
