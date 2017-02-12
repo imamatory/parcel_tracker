@@ -2,20 +2,15 @@ class ParcelsController < ApplicationController
   # respond_to :json
   rescue_from ActionController::ParameterMissing, with: :bad_request
 
-  # before_action :require_parcel_data, only: :index
+  before_action :require_track_code, only: :index
 
   def index
-    @parcels = Parcel.where('phone = ?', params[:phone])
-  end
-
-  def manage
-    @parcels = Parcel.all
+    @parcels = ParcelLogs.where('track_code = ?', get_track_code)
   end
 
   private
 
-  def require_parcel_data
-    params.require(:phone)
+  def get_track_code
     params.require(:track_code)
   end
 end

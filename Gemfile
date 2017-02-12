@@ -32,6 +32,9 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# Add pagination to ActiveModel
+gem 'kaminari'
+
 gem 'rspec-rails'
 gem 'pg'
 gem 'responders'
