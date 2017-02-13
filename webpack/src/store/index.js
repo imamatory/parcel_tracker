@@ -9,14 +9,24 @@ import rootReducer from '../reducers'
 
 const sagaMiddleware = createSagaMiddleware()
 
+let middleware = [
+  sagaMiddleware,
+]
+
+if (process.env.NODE_ENV !== 'production') {
+  middleware = [
+    ...middleware,
+    createLogger(),
+  ]
+}
+
 const configureStore = (initialState) => {
   const store = createStore(
     rootReducer,
     initialState,
     compose(
       applyMiddleware(
-        sagaMiddleware,
-        createLogger(),
+        ...middleware
       ),
       // DevTools.instrument()
     ),

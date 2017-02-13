@@ -12,61 +12,62 @@ var devServerPort = 3808;
 var production = process.env.NODE_ENV === 'production';
 
 var config = {
-    entry: [
-        'babel-polyfill',
-        path.join(__dirname, '..', 'webpack', 'src') + '/index.jsx'
-    ],
+  entry: [
+    'babel-polyfill',
+    path.join(__dirname, '..', 'webpack', 'src') + '/index.jsx'
+  ],
 
-    output: {
-        // Build assets directly in to public/webpack/, let webpack know
-        // that all webpacked assets start with webpack/
+  output: {
+    // Build assets directly in to public/webpack/, let webpack know
+    // that all webpacked assets start with webpack/
 
-        // must match config.webpack.output_dir
-        path: path.join(__dirname, '..', 'public', 'assets'),
-        publicPath: '/assets/',
+    // must match config.webpack.output_dir
+    path: path.join(__dirname, '..', 'public', 'assets'),
+    publicPath: '/assets/',
 
-        filename: production ? '[name]-[chunkhash].js' : 'bundle.js'
-    },
+    filename: production ? '[name]-[chunkhash].js' : 'bundle.js'
+  },
 
-    module: {
-        loaders: [{
-            loader: 'babel',
-            test: /.jsx?$/,
-            include: [
-                path.join(__dirname, '..', 'webpack', 'src'),
-            ],
-        }],
-    },
+  module: {
+    loaders: [{
+      loader: 'babel',
+      test: /.jsx?$/,
+      include: [
+        path.join(__dirname, '..', 'webpack', 'src'),
+      ],
+    }],
+  },
 
-    resolve: {
-        root: path.join(__dirname, '..', 'webpack'),
-        moduleDirectories: ['/node_modules'],
-        extensions: ['', '.js', '.jsx']
-    },
+  resolve: {
+    root: path.join(__dirname, '..', 'webpack'),
+    moduleDirectories: ['/node_modules'],
+    extensions: ['', '.js', '.jsx'],
+  },
 
-    resolveLoader: {
-        moduleDirectories: ['/node_modules'],
-        moduleTemplates: ['*-loader', '*'],
-        extensions: ['', '.js', '.jsx']
-    },
+  resolveLoader: {
+    moduleDirectories: ['/node_modules'],
+    moduleTemplates: ['*-loader', '*'],
+    extensions: ['', '.js', '.jsx'],
+  },
 
-    plugins: [
-        // must match config.webpack.manifest_filename
-        new StatsPlugin('manifest.json', {
-          // We only need assetsByChunkName
-          chunkModules: false,
-          source: false,
-          chunks: false,
-          modules: false,
-          assets: true
-        })]
-};
+  plugins: [
+    // must match config.webpack.manifest_filename
+    new StatsPlugin('manifest.json', {
+      // We only need assetsByChunkName
+      chunkModules: false,
+      source: false,
+      chunks: false,
+      modules: false,
+      assets: true,
+    }),
+  ],
+}
 
 if (production) {
   config.plugins.push(
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      compressor: { warnings: false },
+      compress: { warnings: false },
       sourceMap: false
     }),
     new webpack.DefinePlugin({
