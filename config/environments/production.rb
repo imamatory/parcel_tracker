@@ -83,4 +83,9 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Webpack assets conf
+  config.webpack.output_dir = 'public/assets'
+  config.webpack.public_path = 'assets'
+  config.webpack.dev_server.enabled = false
 end
