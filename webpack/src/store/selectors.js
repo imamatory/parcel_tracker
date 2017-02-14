@@ -4,6 +4,7 @@ import { createSelector } from 'reselect'
 export const getParcels = state => state.entities.parcels
 export const getParcelLogs = state => state.entities.parcelLogs
 export const getIsFetching = state => state.isFetching
+export const getIsEditorMode = state => state.isEditorMode
 
 export const getParcelIds = state => state.lists.parcels
 export const getParcelLogIds = state => state.lists.parcelLogs.logs

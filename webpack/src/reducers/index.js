@@ -63,10 +63,19 @@ const isFetching = (state = false, action) => {
   }
 }
 
+const isEditorMode = (state = true, action) => {
+  if (action.type === types.SET_EDITOR_MODE) {
+    return true
+  }
+  return state
+}
+
+
 const rootReducer = combineReducers({
   entities,
   isFetching,
   form: formReducer,
+  isEditorMode,
   lists: combineReducers({
     parcels: listsParsers,
     parcelLogs: listsParserLogs,
