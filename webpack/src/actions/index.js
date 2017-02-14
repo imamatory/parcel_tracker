@@ -14,6 +14,8 @@ const createRequestCallbacks = requestActionType => ({
 // ИЗБЫТОЧНО!! достаточно одного набора RequestCallbacks для сопровождения любого запроса?
 const loadParcelsRequest = createRequestCallbacks(types.ENTITIES_LIST)
 const loadParcelLogsRequest = createRequestCallbacks(types.ENTITIES_LIST)
+const submitParcelLogRequest = createRequestCallbacks(types.SUBMIT_FORM)
+const submitParcelRequest = createRequestCallbacks(types.SUBMIT_FORM)
 
 export const loadParcels = id => action(types.FETCH_ENTITIES_LIST,
   {
@@ -21,9 +23,30 @@ export const loadParcels = id => action(types.FETCH_ENTITIES_LIST,
     entityRequestActions: loadParcelsRequest,
     apiFun: api.fetchParcelsList,
   })
+
 export const loadParcelLogs = id => action(types.FETCH_ENTITIES_LIST,
   {
     id,
     entityRequestActions: loadParcelLogsRequest,
     apiFun: api.fetchParcelLogsList,
   })
+
+export const submitParcelLogForm = (actionName, id) => data => action(types.SUBMIT_ENTITY_FORM,
+  {
+    id,
+    actionName,
+    entityRequestActions: submitParcelLogRequest,
+    apiFun: api.submitParcelLog,
+    data,
+  })
+
+export const submitParcelForm = (actionName, id) => data => action(types.SUBMIT_ENTITY_FORM,
+  {
+    id,
+    actionName,
+    entityRequestActions: submitParcelRequest,
+    apiFun: api.submitParcel,
+    data,
+  })
+
+export const setEditorMode = () => action(types.SET_EDITOR_MODE)

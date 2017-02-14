@@ -1,53 +1,50 @@
 import React, { PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { loadparcels } from '../actions'
-import { submitparcels } from '../middleware/api'
-import { getparcels } from '../store/selectors'
-import parcelsForm from '../components/ParcelsForm'
+import { Button, Modal } from 'react-bootstrap'
 
 
 class Edit extends React.Component {
   static propTypes = {
-    routeParams: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }),
-    fetchItem: PropTypes.func,
-    getItem: PropTypes.object,
+    onSubmitAction: PropTypes.func,
+    item: PropTypes.object,
+    formComponent: PropTypes.func.isRequired,
+    router: PropTypes.object,
   }
 
   constructor(props) {
     super(props)
-    props.fetchItem(this.props.routeParams.id)
+    this.state = { showModal: true }
+  }
+
+  close = () => {
+    const router = this.props.router
+    this.setState({ showModal: false })
+    router.replace(router.location.pathname)
+  }
+
+  open = () => {
+    this.setState({ showModal: true })
   }
 
   render() {
-    const item = this.props.getItem
+    const { item, onSubmitAction, formComponent: FormComponemt } = this.props
     return (
-      <div>
-        <Link to="/">Back</Link>
-        { !item ?
-          <p>Not found</p> :
-            <div>
-              <div>ID: {item.id}</div>
-              <parcelsForm
-                getData={this.props.getItem}
-                onSubmit={submitparcels}
-              />
-            </div>
-        }
-      </div>
+      <Modal show={this.state.showModal} onHide={this.close}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <FormComponemt
+            getData={item}
+            onSubmitAction={onSubmitAction}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.close}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     )
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  getItem: getparcels(state)[ownProps.routeParams.id],
-})
-
-const mapDispatchToProps = dispatch => ({
-  fetchItem: bindActionCreators(loadparcels, dispatch),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Edit)
+export default Edit

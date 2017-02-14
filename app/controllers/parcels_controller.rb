@@ -5,7 +5,6 @@ class ParcelsController < ApplicationController
   # before_action :require_parcel_data, only: :index
 
   def index
-    @parcels = Parcel.where('phone = ?', params[:phone])
   end
 
   def manage
@@ -14,8 +13,8 @@ class ParcelsController < ApplicationController
 
   private
 
-  def require_parcel_data
-    params.require(:phone)
-    params.require(:track_code)
-  end
+  # def require_parcel_data
+  #   params.require(:phone)
+  #   params.require(:track_code)
+  # end
 end

@@ -9,8 +9,8 @@ module Api
       instance_variable_set("@#{resource_name}", resource)
     end
 
-    def parcel_log_params
-      params.require(:parcel_log).permit(*PARAMS_ATTRIBUTES)
+    def parcel_params
+      params.require(:parcel).permit(*PARAMS_ATTRIBUTES)
     end
   end
 end

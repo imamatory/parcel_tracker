@@ -17,3 +17,4 @@ export const SUBMIT_ENTITY_FORM = 'SUBMIT_ENTITY_FORM'
 
 // Complex types
 export const ENTITIES_LIST = createRequestTypes(FETCH_ENTITIES_LIST)
+export const SUBMIT_FORM = createRequestTypes(SUBMIT_ENTITY_FORM)

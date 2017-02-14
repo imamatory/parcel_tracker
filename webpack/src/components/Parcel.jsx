@@ -1,18 +1,25 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
+import { Media } from 'react-bootstrap'
 
-const Parcel = ({ trackCode, updatedAt }) => (
+const Parcel = ({ trackCode, date, postStatus }) => (
   <div>
-    <Link to={`/parcel_logs/${trackCode}`}>
-      <b>{trackCode}</b>
-    </Link>
-    <div>{updatedAt}</div>
+    <Media.Body>
+      <Media.Heading>
+        <Link to={`/parcel_logs/${trackCode}`}>{trackCode}</Link>
+      </Media.Heading>
+      <div>{date}</div>
+    </Media.Body>
+    <Media.Right>
+      {postStatus}
+    </Media.Right>
   </div>
 )
 
 Parcel.propTypes = {
   trackCode: PropTypes.string.isRequired,
-  updatedAt: PropTypes.string,
+  postStatus: PropTypes.string.isRequired,
+  date: PropTypes.string,
 }
 
 export default Parcel

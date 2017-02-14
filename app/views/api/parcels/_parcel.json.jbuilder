@@ -4,5 +4,5 @@ json.extract!(parcel,
               :post_status,
               :src_addr,
               :dest_addr,
-              :phone,
-              :updated_at)
+              :phone)
+json.date parcel.created_at.to_formatted_s(:db)

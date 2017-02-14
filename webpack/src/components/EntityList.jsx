@@ -4,13 +4,13 @@ import { Media } from 'react-bootstrap'
 class EntityList extends React.Component {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.object),
-    ItemComponent: PropTypes.func,
+    itemComponent: PropTypes.func,
   }
 
   isChecked = item => item && item.status
 
   render() {
-    const { ItemComponent } = this.props
+    const { itemComponent: ItemComponent } = this.props
     return (
       <div>
         {

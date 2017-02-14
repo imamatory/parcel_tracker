@@ -1,18 +1,20 @@
 import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Button, Col } from 'react-bootstrap'
 
 import Parcel from '../components/Parcel'
 import EntityList from '../components/EntityList'
-import { loadParcels } from '../actions'
+import { loadParcels, submitParcelForm } from '../actions'
+import { ListActions, Edit, ParcelForm } from '../containers'
 import { getParcelsList, getIsFetching } from '../store/selectors'
 
 class ParcelsList extends React.Component {
   static propTypes = {
     isFetching: PropTypes.bool.isRequired,
     fetchItems: PropTypes.func.isRequired,
-    items: PropTypes.array,
+    items: PropTypes.arrayOf(PropTypes.object),
+    routeAction: PropTypes.string,
+    router: PropTypes.object,
   }
 
   constructor(props) {
@@ -21,27 +23,38 @@ class ParcelsList extends React.Component {
   }
 
   render() {
-    const { items, fetchItems, isFetching } = this.props
+    const { items, fetchItems, isFetching, routeAction, router } = this.props
     return (
       <div>
-        <h1>Parcel list</h1>
+        <h1>{"Parcel's list"}</h1>
         { isFetching ? 'Records are loading...' : '' }
-        <Button onClick={fetchItems}>Обновить</Button>
-        <br />
-        <EntityList items={items} ItemComponent={Parcel} />
+        <ListActions
+          updateListFn={fetchItems}
+          buttons={[
+            {
+              url: '/parcels/?action=new',
+              title: 'Create parcel',
+            },
+          ]}
+        />
+        <EntityList items={items} itemComponent={Parcel} />
+        { routeAction === 'new' ?
+          <Edit onSubmitAction={submitParcelForm('')} formComponent={ParcelForm} router={router} />
+          : ''
+        }
       </div>
     )
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
   isFetching: getIsFetching(state),
   items: getParcelsList(state),
+  routeAction: props.location.query.action,
 })
 
 const mapDispatchToProps = dispatch => ({
   fetchItems: bindActionCreators(loadParcels, dispatch),
 })
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParcelsList)

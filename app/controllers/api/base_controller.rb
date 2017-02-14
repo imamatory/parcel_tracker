@@ -13,6 +13,7 @@ module Api
                       .page(page_params[:page])
                       .per(page_params[:page_size])
       instance_variable_set(plural_resource_name, resources)
+
       respond_with instance_variable_get(plural_resource_name)
     end
 
@@ -21,13 +22,12 @@ module Api
     end
 
     def create
-      puts params.require(:parcel).permit(*PARAMS_ATTRIBUTES)
-      @resource = resource_class.new(params.require(:parcel).permit(*PARAMS_ATTRIBUTES))
+      resource_set(resource_class.new(resource_params))
 
-      if @resource.save
+      if resource_get.save
         render :show, status: :created
       else
-        render json: @resource.errors, status: :unprocessable_entity
+        render json: resource_get.errors, status: :unprocessable_entity
       end
     end
 
