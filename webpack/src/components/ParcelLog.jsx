@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import { Media } from 'react-bootstrap'
 
+import { getStatusNameByCode } from './Parcel'
+
 const ParcelLog = ({ msg, postStatus, date }) => (
   <div>
     <Media.Body>
@@ -8,7 +10,7 @@ const ParcelLog = ({ msg, postStatus, date }) => (
       <div>{date}</div>
     </Media.Body>
     <Media.Right>
-      <b>{postStatus}</b>
+      <b className="nobr">{getStatusNameByCode(postStatus)}</b>
     </Media.Right>
   </div>
 )
