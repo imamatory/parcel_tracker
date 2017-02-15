@@ -9,7 +9,7 @@ module Api
 
     def index(resource_scope = resource_class.all)
       plural_resource_name = "@#{resource_name.pluralize}"
-      resources = resource_scope.where(query_params)
+      resources = resource_scope.where(resource_params)
                       .page(page_params[:page])
                       .per(page_params[:page_size])
       instance_variable_set(plural_resource_name, resources)

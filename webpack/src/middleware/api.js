@@ -1,10 +1,8 @@
 import { normalize } from 'normalizr'
 import axios from 'axios'
-// import qs from 'qs'
 
 import Schemas from './schema'
 
-// const API_ROOT = '/dist/list.json';
 
 const callApi = (params = {}) => {
   const defaultParams = {
@@ -35,24 +33,28 @@ const callApi = (params = {}) => {
     )
 }
 
-export const fetchParcelsList = (id = '') => callApi({
+export const fetchParcelsList = (id = '', _, data) => callApi({
   url: `/api/parcels/${id}`,
   schema: Schemas.PARCELS,
   method: 'GET',
+  data,
 })
+
 export const fetchParcelLogsList = (id = '') => callApi({
   url: `/api/parcel_logs/${id}`,
   schema: Schemas.PARCEL_LOGS,
   method: 'GET',
 })
-export const submitParcelLog = (id = '', actionName, data) => callApi({
-  url: `/api/parcel_logs/${id}`,
+
+export const submitParcelLog = (id = '', actionName = '', data) => callApi({
+  url: `/api/parcels/${id}/parcel_logs`,
   schema: Schemas.PARCEL_LOGS,
   method: 'POST',
   actionName,
   data,
 })
-export const submitParcel = (id = '', actionName, data) => callApi({
+
+export const submitParcel = (id = '', actionName = '', data) => callApi({
   url: `/api/parcels/${id}`,
   schema: Schemas.PARCELS,
   method: 'POST',

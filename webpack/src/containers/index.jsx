@@ -5,6 +5,7 @@ import listActions from './ListActions'
 import parcelForm from './ParcelForm'
 import parcelLogForm from './ParcelLogForm'
 import edit from './Edit'
+import userAuthForm from './UserAuthForm'
 
 export const App = app
 export const ParcelsList = parcelsList
@@ -13,3 +14,4 @@ export const ListActions = listActions
 export const ParcelForm = parcelForm
 export const ParcelLogForm = parcelLogForm
 export const Edit = edit
+export const UserAuthForm = userAuthForm

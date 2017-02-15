@@ -3,54 +3,20 @@ import { Router, browserHistory } from 'react-router'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 
-import { App, ParcelsList, ParcelLogsList } from './containers/'
+import { routes } from './routes/'
 import configureStore from './store'
-import { setEditorMode } from './actions'
 
 const store = configureStore()
 
-const enableEditorMode = () => {
-  store.dispatch(setEditorMode())
-}
-
 const renderRoot = () => {
-  const routes = [{
-    path: '/',
-    component: App,
-    indexRoute: {
-      component: ParcelsList,
-    },
-    childRoutes: [
-      {
-        path: 'parcel_logs/:trackCode',
-        component: ParcelLogsList,
-      },
-      {
-        path: 'parcels/',
-        component: ParcelsList,
-      },
-      {
-        path: 'manage',
-        component: ParcelsList,
-        onEnter: enableEditorMode,
-        childRoutes: [
-          {
-            path: 'parcel_logs/:trackCode',
-            component: ParcelLogsList,
-          },
-        ],
-      },
-    ],
-  }]
-
   ReactDOM.render(
     <Provider store={store}>
-      <Router history={browserHistory} routes={routes} />
+      <Router history={browserHistory} routes={routes(store)} />
     </Provider>,
     document.getElementById('app'))
 }
 
-renderRoot(App)
+renderRoot()
 
 // if (module.hot) {
 //   module.hot.accept('./containers/App', () => {

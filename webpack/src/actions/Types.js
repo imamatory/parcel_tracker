@@ -14,6 +14,7 @@ function createRequestTypes(base) {
 export const FETCH_ENTITIES_LIST = 'FETCH_ENTITIES_LIST'
 export const SET_EDITOR_MODE = 'SET_EDITOR_MODE'
 export const SUBMIT_ENTITY_FORM = 'SUBMIT_ENTITY_FORM'
+export const SUBMIT_USER_DATA = 'SUBMIT_USER_DATA'
 
 // Complex types
 export const ENTITIES_LIST = createRequestTypes(FETCH_ENTITIES_LIST)

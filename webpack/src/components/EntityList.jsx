@@ -10,7 +10,7 @@ class EntityList extends React.Component {
   isChecked = item => item && item.status
 
   render() {
-    const { itemComponent: ItemComponent } = this.props
+    const { itemComponent: ItemComponent, isEditorMode } = this.props
     return (
       <div>
         {
@@ -20,7 +20,7 @@ class EntityList extends React.Component {
 
               return (
                 <Media key={id.toString()} className="media__custom">
-                  <ItemComponent {...item} />
+                  <ItemComponent {...item} isEditorMode={isEditorMode} />
                 </Media>
               )
             }

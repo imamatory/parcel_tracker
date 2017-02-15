@@ -17,9 +17,9 @@ const loadParcelLogsRequest = createRequestCallbacks(types.ENTITIES_LIST)
 const submitParcelLogRequest = createRequestCallbacks(types.SUBMIT_FORM)
 const submitParcelRequest = createRequestCallbacks(types.SUBMIT_FORM)
 
-export const loadParcels = id => action(types.FETCH_ENTITIES_LIST,
+export const loadParcels = data => action(types.FETCH_ENTITIES_LIST,
   {
-    id,
+    data,
     entityRequestActions: loadParcelsRequest,
     apiFun: api.fetchParcelsList,
   })
@@ -50,3 +50,5 @@ export const submitParcelForm = (actionName, id) => data => action(types.SUBMIT_
   })
 
 export const setEditorMode = () => action(types.SET_EDITOR_MODE)
+
+export const submitUserData = data => action(types.SUBMIT_USER_DATA, data)

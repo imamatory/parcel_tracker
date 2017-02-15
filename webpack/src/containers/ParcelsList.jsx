@@ -6,7 +6,7 @@ import Parcel from '../components/Parcel'
 import EntityList from '../components/EntityList'
 import { loadParcels, submitParcelForm } from '../actions'
 import { ListActions, Edit, ParcelForm } from '../containers'
-import { getParcelsList, getIsFetching } from '../store/selectors'
+import { getParcelsList, getIsFetching, getIsEditorMode } from '../store/selectors'
 
 class ParcelsList extends React.Component {
   static propTypes = {
@@ -23,7 +23,8 @@ class ParcelsList extends React.Component {
   }
 
   render() {
-    const { items, fetchItems, isFetching, routeAction, router } = this.props
+    const { items, fetchItems, isFetching, routeAction, router, isEditorMode } = this.props
+
     return (
       <div>
         <h1>{"Parcel's list"}</h1>
@@ -32,14 +33,14 @@ class ParcelsList extends React.Component {
           updateListFn={fetchItems}
           buttons={[
             {
-              url: '/parcels/?action=new',
+              url: '/manage/parcels/?action=new',
               title: 'Create parcel',
             },
           ]}
         />
-        <EntityList items={items} itemComponent={Parcel} />
-        { routeAction === 'new' ?
-          <Edit onSubmitAction={submitParcelForm('')} formComponent={ParcelForm} router={router} />
+        <EntityList items={items} itemComponent={Parcel} isEditorMode={isEditorMode} />
+        { isEditorMode && routeAction === 'new' ?
+          <Edit onSubmitAction={submitParcelForm()} formComponent={ParcelForm} router={router} />
           : ''
         }
       </div>
@@ -51,6 +52,7 @@ const mapStateToProps = (state, props) => ({
   isFetching: getIsFetching(state),
   items: getParcelsList(state),
   routeAction: props.location.query.action,
+  isEditorMode: getIsEditorMode(state),
 })
 
 const mapDispatchToProps = dispatch => ({

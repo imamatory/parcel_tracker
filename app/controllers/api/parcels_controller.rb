@@ -10,7 +10,7 @@ module Api
     end
 
     def parcel_params
-      params.require(:parcel).permit(*PARAMS_ATTRIBUTES)
+      params.permit(*PARAMS_ATTRIBUTES)
     end
   end
 end

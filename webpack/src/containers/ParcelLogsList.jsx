@@ -2,19 +2,24 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { Button } from 'react-bootstrap'
 
 import ParcelLog from '../components/ParcelLog'
 import EntityList from '../components/EntityList'
-import { loadParcelLogs } from '../actions'
-import { getCurrentParcelLog, getIsFetching } from '../store/selectors'
+import { loadParcelLogs, submitParcelLogForm } from '../actions'
+import { ListActions, Edit, ParcelLogForm } from '../containers'
+import { getCurrentParcelLog, getIsFetching, getIsEditorMode } from '../store/selectors'
+import { linkPrefix } from '../routes'
+
 
 class ParcelLogsList extends React.Component {
   static propTypes = {
     isFetching: PropTypes.bool.isRequired,
+    isEditorMode: PropTypes.bool.isRequired,
     fetchItems: PropTypes.func.isRequired,
-    items: PropTypes.array,
+    items: PropTypes.arrayOf(PropTypes.object),
     trackCode: PropTypes.string,
+    routeAction: PropTypes.string,
+    router: PropTypes.object,
   }
 
   constructor(props) {
@@ -23,16 +28,34 @@ class ParcelLogsList extends React.Component {
   }
 
   render() {
-    const { items, fetchItems, isFetching, trackCode } = this.props
-    console.log(items)
+    const { items, fetchItems, isFetching, trackCode,
+       routeAction, isEditorMode, router } = this.props
     return (
       <div>
         <h1>{`Parcel log for ${trackCode}`}</h1>
-        <Link to={`/`}>Back</Link>
+        <Link to={`${linkPrefix(isEditorMode)}/parcels`} >Back to list</Link>
         <br />
         { isFetching ? 'Records are loading...' : '' }
-        <Button onClick={() => fetchItems(trackCode)}>Обновить</Button>
-        <EntityList items={items} ItemComponent={ParcelLog} />
+        <ListActions
+          updateListFn={() => fetchItems(trackCode)}
+          buttons={[
+            {
+              url: `/manage/parcel_logs/${trackCode}/?action=new`,
+              title: 'Create parcel note',
+            },
+          ]}
+        />
+        { items.length ?
+          <EntityList items={items} itemComponent={ParcelLog} />
+          : 'No notes'
+        }
+        { routeAction === 'new' ?
+          <Edit
+            onSubmitAction={submitParcelLogForm('', trackCode)}
+            formComponent={ParcelLogForm}
+            router={router}
+          /> : ''
+        }
       </div>
     )
   }
@@ -41,7 +64,9 @@ class ParcelLogsList extends React.Component {
 const mapStateToProps = (state, props) => ({
   isFetching: getIsFetching(state),
   items: getCurrentParcelLog(state),
+  isEditorMode: getIsEditorMode(state),
   trackCode: props.routeParams.trackCode,
+  routeAction: props.location.query.action,
 })
 
 const mapDispatchToProps = dispatch => ({

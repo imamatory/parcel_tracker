@@ -1,8 +1,10 @@
 import { throttle, takeEvery, delay } from 'redux-saga'
 import { select, take, call, put, fork } from 'redux-saga/effects'
+import { browserHistory } from 'react-router'
 
 import * as actions from '../actions'
 import * as types from '../actions/Types'
+import { getUserData } from '../store/selectors'
 import { API_FETCH_DELAY } from '../constants'
 
 
@@ -27,8 +29,16 @@ function* fetchEntity(action) {
 //   }
 // }
 
+
 export function* callFetchEntity(action) {
-  yield call(fetchEntity, action)
+  const { phone, trackCode: track_code } = yield select(getUserData)
+
+  yield call(fetchEntity, Object.assign({}, action, {
+    data: {
+      phone,
+      track_code,
+    },
+  }))
 }
 
 export function* watchCallApiAsync() {
@@ -37,6 +47,12 @@ export function* watchCallApiAsync() {
 
 export function* watchSubmit() {
   yield takeEvery(types.SUBMIT_ENTITY_FORM, callFetchEntity)
+}
+
+export function* watchAuth() {
+  yield takeEvery(types.SUBMIT_USER_DATA, () => {
+    browserHistory.push('/parcels/')
+  })
 }
 
 // export function* watchPollparcelsApi() {
@@ -48,5 +64,6 @@ export default function* rootSaga() {
     // fork(watchPollparcelsApi),
     fork(watchCallApiAsync),
     fork(watchSubmit),
+    fork(watchAuth),
   ]
 }

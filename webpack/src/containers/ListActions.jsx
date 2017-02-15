@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { Button, Media, Modal } from 'react-bootstrap'
+import { Button, Media } from 'react-bootstrap'
 
 import { getIsEditorMode } from '../store/selectors'
 
@@ -15,10 +15,11 @@ class ListActions extends React.Component {
 
   render() {
     const { updateListFn, buttons, isEditorMode } = this.props
+
     return (
       <Media className={'media__buttons_row'}>
         <Media.Body>
-          <Button onClick={updateListFn}>Update</Button>
+          <Button onClick={() => updateListFn()}>Update</Button>
         </Media.Body>
         { isEditorMode === true && buttons.length ?
           <Media.Right>

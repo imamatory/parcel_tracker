@@ -63,9 +63,20 @@ const isFetching = (state = false, action) => {
   }
 }
 
-const isEditorMode = (state = true, action) => {
+const isEditorMode = (state = false, action) => {
   if (action.type === types.SET_EDITOR_MODE) {
     return true
+  }
+  return state
+}
+
+const userData = (state = {}, action) => {
+  if (action.type === types.SUBMIT_USER_DATA) {
+    const { phone, trackCode } = action
+    return {
+      phone,
+      trackCode,
+    }
   }
   return state
 }
@@ -76,6 +87,7 @@ const rootReducer = combineReducers({
   isFetching,
   form: formReducer,
   isEditorMode,
+  userData,
   lists: combineReducers({
     parcels: listsParsers,
     parcelLogs: listsParserLogs,
