@@ -9,8 +9,8 @@ const App = ({ children }) =>
           <Navbar.Brand>Parcels traker</Navbar.Brand>
         </Navbar.Header>
       </Navbar>
-      <Col sm={6} xsOffset={3}>
-        <Col xs={12}>
+      <Col sm={8} smOffset={2}>
+        <Col xs={8} xsOffset={2}>
           {children}
         </Col>
       </Col>

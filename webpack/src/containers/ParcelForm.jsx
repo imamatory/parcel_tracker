@@ -20,20 +20,20 @@ const ParcelForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Field name="track_code" component={FieldForm} type="text" placeholder={"Parcel's track code"}>
+      <Field name="track_code" component={FieldForm} type="text">
         {"Parcel's track code"}
       </Field>
-      <Field name="phone" component={FieldForm} type="text" placeholder="Source address">
-        Phone
+      <Field name="phone" component={FieldForm} type="text">
+        {'Phone'}
       </Field>
-      <Field name="src_addr" component={FieldForm} type="text" placeholder="Source address">
-        Source address
+      <Field name="src_addr" component={FieldForm} type="text">
+        {'Source address'}
       </Field>
-      <Field name="dest_addr" component={FieldForm} type="text" placeholder="Destination address">
-        Destination address
+      <Field name="dest_addr" component={FieldForm} type="text">
+        {'Destination address'}
       </Field>
       <div>
-        <Button type="submit" disabled={pristine || submitting}>Submit</Button>
+        <Button type="submit" disabled={pristine || submitting}>{'Submit'}</Button>
       </div>
     </form>
   )
@@ -48,7 +48,7 @@ ParcelForm.propTypes = {
 
 export default connect(
   (state, ownProps) => ({
-    // initialValues: ownProps.getData,
+    initialValues: ownProps.getData,
   }),
   (dispatch, ownProps) => ({
     onSubmit: bindActionCreators(ownProps.onSubmitAction, dispatch),
