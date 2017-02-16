@@ -17,13 +17,25 @@ const makeHandleOnClickDelete = (trackCode, deleteCb) => () => {
   confirm(`Delete parcel ${trackCode}?`) && deleteCb()
 }
 
+const urlForEdit = (isEditorMode, trackCode) =>
+  `${getLinkPrefix(isEditorMode)}/parcels/${trackCode}/?action=edit`
+
+const urlForLog = (isEditorMode, trackCode) =>
+  `${getLinkPrefix(isEditorMode)}/parcels/${trackCode}/parcel_logs`
+
 const Parcel = ({ trackCode, date, postStatus, isEditorMode, deleteParcel }) => (
   <div className={postStatus === 'received' ? 'muted' : ''}>
     <Media.Body>
       <Media.Heading>
-        <Link to={`${getLinkPrefix(isEditorMode)}/parcel_logs/${trackCode}`}>{trackCode}</Link>
+        <Link to={urlForLog(isEditorMode, trackCode)}>{trackCode}</Link>
       </Media.Heading>
-      <div>{date}</div>
+      <div>
+        { isEditorMode ?
+          <Link to={urlForEdit(isEditorMode, trackCode)}>Edit</Link>
+          : ''
+        }
+        <span className="date">{date}</span>
+      </div>
     </Media.Body>
     <Media.Right>
       { isEditorMode ?
@@ -45,7 +57,7 @@ Parcel.propTypes = {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  deleteParcel: bindActionCreators(submitParcelForm('DELETE', { id: ownProps.trackCode }), dispatch),
+  deleteParcel: bindActionCreators(submitParcelForm('DELETE', { trackCode: ownProps.trackCode }), dispatch),
 })
 
 export default connect(null, mapDispatchToProps)(Parcel)

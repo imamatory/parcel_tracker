@@ -12,13 +12,12 @@ Rails.application.routes.draw do
     end
   end
 
-  get '/:controller/(.:format)', action: :index
-  get '/:controller/:id(.:format)', action: :index
+  get '/:controller/(:id)(.:format)', action: :index
 
 
   get '/manage/(.:format)', to: 'parcels#index'
-  get '/manage/:controller/(.:format)', action: :index
-  get '/manage/:controller/:id(.:format)', action: :index
+  get '/manage/parcels/(:id)(.:format)', to: 'parcels#index'
+  get '/manage/parcels/:track_code/parcel_logs/(:id)(.:format)', to: 'parcels#index'
 
   root 'parcels#index'
 

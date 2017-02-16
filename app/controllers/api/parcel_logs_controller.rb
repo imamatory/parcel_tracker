@@ -4,7 +4,7 @@ module Api
 
     def index
       plural_resource_name = "@#{resource_name.pluralize}"
-      resources = Parcel.includes(:logs).find_by!(track_code: params.require(:id)).logs
+      resources = Parcel.includes(:logs).find_by!(track_code: params.require(:parcel_id)).logs
       instance_variable_set(plural_resource_name, resources)
 
       respond_with instance_variable_get(plural_resource_name)

@@ -25,13 +25,13 @@ export const routes = store => [{
   },
   childRoutes: [
     {
-      path: 'parcel_logs/:trackCode',
-      component: ParcelLogsList,
+      path: 'parcels(/)',
+      component: ParcelsList,
       onEnter: () => verifyUserAuth(store),
     },
     {
-      path: 'parcels',
-      component: ParcelsList,
+      path: 'parcels/:trackCode/parcel_logs(/)',
+      component: ParcelLogsList,
       onEnter: () => verifyUserAuth(store),
     },
     {
@@ -44,12 +44,12 @@ export const routes = store => [{
       },
       childRoutes: [
         {
-          path: 'parcel_logs/:trackCode',
-          component: ParcelLogsList,
+          path: 'parcels(/)(:trackCode)',
+          component: ParcelsList,
         },
         {
-          path: 'parcels',
-          component: ParcelsList,
+          path: 'parcels/:trackCode/parcel_logs(/)(:id)',
+          component: ParcelLogsList,
         },
       ],
     },

@@ -47,7 +47,7 @@ export const fetchParcelsList = ({ id = '' }, _, data) => callApi({
 })
 
 export const fetchParcelLogsList = ({ trackCode = '', id = '' }) => callApi({
-  url: `/api/parcel_logs/${id || trackCode}`,
+  url: `/api/parcels/${trackCode}/parcel_logs/${id}`,
   schema: Schemas.PARCEL_LOGS,
   method: 'GET',
 })
@@ -60,8 +60,8 @@ export const submitParcelLog = ({ trackCode = '', id = '' }, method, data) => ca
   data,
 })
 
-export const submitParcel = ({ id = '' }, method, data) => callApi({
-  url: `/api/parcels/${id}`,
+export const submitParcel = ({ trackCode = '' }, method, data) => callApi({
+  url: `/api/parcels/${trackCode}`,
   schema: Schemas.PARCELS,
   method: method || 'POST',
   data,
