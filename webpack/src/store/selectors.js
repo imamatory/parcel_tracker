@@ -3,6 +3,7 @@ import { createSelector } from 'reselect'
 
 export const getParcels = state => state.entities.parcels
 export const getParcelLogs = state => state.entities.parcelLogs
+export const getParcelLogById = id => state => getParcelLogs(state)[id]
 export const getIsFetching = state => state.isFetching
 export const getIsEditorMode = state => state.isEditorMode
 export const getUserData = state => state.userData
@@ -26,3 +27,10 @@ export const getIsUserLoggedIn = createSelector(
 
 export const getParcelsList = entityByIds(getParcels, getParcelIds)
 export const getCurrentParcelLog = entityByIds(getParcelLogs, getParcelLogIds)
+
+
+export const getParcelByTrackCode = code => createSelector(
+    getParcelsList,
+    parcels =>
+      parcels.find(({ trackCode }) => trackCode === code)
+  )

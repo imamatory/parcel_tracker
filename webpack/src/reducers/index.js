@@ -86,11 +86,38 @@ const userData = (state = {}, action) => {
   }
 }
 
+const submitErrorsReducer = (state, action) => {
+  switch (action.type) {
+    case types.SUBMIT_FORM.FAILURE:
+      if (action.error.response && action.error.response.data) {
+        return {
+          ...state,
+          asyncErrors: action.error.response.data,
+        }
+      } else {
+        return {
+          ...state,
+          asyncErrors: {
+            error: action.error
+          },
+        }
+      }
+
+    default:
+      return state
+  }
+}
+
+const form = formReducer.plugin({
+  parcel: submitErrorsReducer,
+  parcelLog: submitErrorsReducer,
+})
+
 
 const rootReducer = combineReducers({
   entities,
   isFetching,
-  form: formReducer,
+  form,
   isEditorMode,
   userData,
   lists: combineReducers({

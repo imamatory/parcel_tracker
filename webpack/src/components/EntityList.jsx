@@ -21,7 +21,10 @@ class EntityList extends React.Component {
 
               return (
                 <Media key={id.toString()} className="media__custom">
-                  <ItemComponent {...item} isEditorMode={isEditorMode} />
+                  <ItemComponent
+                    {...item}
+                    isEditorMode={isEditorMode}
+                  />
                 </Media>
               )
             }

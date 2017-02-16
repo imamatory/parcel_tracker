@@ -2,34 +2,30 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button } from 'react-bootstrap'
+import { Button, Alert } from 'react-bootstrap'
 
 import FieldForm from '../components/FieldForm'
 
-
-export const validate = (values) => {
-  const errors = {}
-  if (!values.name) {
-    errors.text = "Field couldn't be empty!"
-  }
-  return errors
-}
-
 const ParcelForm = (props) => {
-  const { handleSubmit, onSubmit, pristine, submitting } = props
+  const { handleSubmit, onSubmit, pristine, submitting, error } = props
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Field name="track_code" component={FieldForm} type="text">
+      { error ?
+        <Alert bsStyle="danger">
+          {error}
+        </Alert> : ''
+      }
+      <Field name="trackCode" component={FieldForm} type="text">
         {"Parcel's track code"}
       </Field>
       <Field name="phone" component={FieldForm} type="text">
         {'Phone'}
       </Field>
-      <Field name="src_addr" component={FieldForm} type="text">
+      <Field name="srcAddr" component={FieldForm} type="text">
         {'Source address'}
       </Field>
-      <Field name="dest_addr" component={FieldForm} type="text">
+      <Field name="destAddr" component={FieldForm} type="text">
         {'Destination address'}
       </Field>
       <div>
@@ -44,6 +40,7 @@ ParcelForm.propTypes = {
   submitting: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  error: PropTypes.string,
 }
 
 export default connect(
@@ -56,6 +53,5 @@ export default connect(
 )(
   reduxForm({
     form: 'parcel',
-    validate,
   }
 )(ParcelForm))

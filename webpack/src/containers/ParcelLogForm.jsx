@@ -8,23 +8,16 @@ import FieldForm from '../components/FieldForm'
 import { POST_STATUSES } from '../constants/'
 
 
-export const validate = (values) => {
-  const errors = {}
-  if (!values.name) {
-    errors.text = "Field couldn't be empty!"
-  }
-  return errors
-}
-
 const ParcelLogForm = (props) => {
   const { handleSubmit, pristine, submitting } = props
+  console.log(props);
 
   return (
     <form onSubmit={handleSubmit}>
       <Field name="msg" component={FieldForm} type="text">
         {'Message'}
       </Field>
-      <Field name="post_status" component={FieldForm} type="select" optionList={POST_STATUSES}>
+      <Field name="postStatus" component={FieldForm} type="select" optionList={POST_STATUSES}>
         {'Post status'}
       </Field>
       <div>
@@ -50,6 +43,5 @@ export default connect(
 )(
   reduxForm({
     form: 'parcelLog',
-    validate,
   }
 )(ParcelLogForm))

@@ -15,8 +15,7 @@ const forwardTo = (url) => {
 const injectUserData = (obj, userData) =>
   Object.assign({}, obj, {
     data: {
-      phone: userData.phone,
-      track_code: userData.trackCode,
+      ...userData,
     },
   })
 
@@ -83,6 +82,13 @@ function* watchLogout() {
   })
 }
 
+function* watchSubmitFormSuccess() {
+  yield takeEvery(types.SUBMIT_FORM.SUCCESS, (action) => {
+    // console.log(action);
+    // forwardTo('/')
+  })
+}
+
 // export function* watchPollparcelsApi() {
 //   yield throttle(API_FETCH_DELAY, types.FETCH_PARCELS_LIST.SUCCESS, pollParcelsListApi)
 // }
@@ -92,6 +98,7 @@ export default function* rootSaga() {
     // fork(watchPollparcelsApi),
     fork(watchCallApiAsync),
     fork(watchSubmit),
+    fork(watchSubmitFormSuccess),
     fork(watchLogin),
     fork(watchLogout),
   ]
