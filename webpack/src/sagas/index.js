@@ -4,17 +4,33 @@ import { browserHistory } from 'react-router'
 
 import * as actions from '../actions'
 import * as types from '../actions/Types'
-import { getUserData } from '../store/selectors'
+import { getUserData, getIsUserLoggedIn } from '../store/selectors'
 import { API_FETCH_DELAY } from '../constants'
 
 
-function* fetchEntity(action) {
-  const { entityRequestActions: entity, apiFun, id, actionName, data } = action
+const forwardTo = (url) => {
+  browserHistory.push(url)
+}
 
+const injectUserData = (obj, userData) =>
+  Object.assign({}, obj, {
+    data: {
+      phone: userData.phone,
+      track_code: userData.trackCode,
+    },
+  })
+
+function* fetchEntity(action) {
+  // console.log(action);
+  const { entityRequestActions: entity, apiFun, id, method, data } = action
   yield put(entity.request(id))
-  const { response, error } = yield call(apiFun, id, actionName, data)
+  const { response, error } = yield call(apiFun, id, method, data)
   if (response) {
     yield put(entity.success(response, id))
+
+    if (action.nextAction) {
+      yield put(action.nextAction())
+    }
   } else {
     yield put(entity.failure(error, id))
   }
@@ -30,28 +46,40 @@ function* fetchEntity(action) {
 // }
 
 
-export function* callFetchEntity(action) {
-  const { phone, trackCode: track_code } = yield select(getUserData)
+// function* callFetchEntity(action) {
+//   const userData = yield select(getUserData)
+//   yield call(fetchEntity, injectUserData(action, userData))
+// }
 
-  yield call(fetchEntity, Object.assign({}, action, {
-    data: {
-      phone,
-      track_code,
-    },
-  }))
+function* callFetchEntity(action) {
+  const { isUserDataNeeded } = action
+  const isLoggedIn = yield select(getIsUserLoggedIn)
+
+  if (isLoggedIn && isUserDataNeeded) {
+    const userData = yield select(getUserData)
+    yield call(fetchEntity, injectUserData(action, userData))
+  } else {
+    yield call(fetchEntity, action)
+  }
 }
 
-export function* watchCallApiAsync() {
+function* watchCallApiAsync() {
   yield takeEvery(types.FETCH_ENTITIES_LIST, callFetchEntity)
 }
 
-export function* watchSubmit() {
+function* watchSubmit() {
   yield takeEvery(types.SUBMIT_ENTITY_FORM, callFetchEntity)
 }
 
-export function* watchAuth() {
+function* watchLogin() {
   yield takeEvery(types.SUBMIT_USER_DATA, () => {
-    browserHistory.push('/parcels/')
+    forwardTo('/parcels/')
+  })
+}
+
+function* watchLogout() {
+  yield takeEvery(types.RESET_USER, () => {
+    forwardTo('/')
   })
 }
 
@@ -64,6 +92,7 @@ export default function* rootSaga() {
     // fork(watchPollparcelsApi),
     fork(watchCallApiAsync),
     fork(watchSubmit),
-    fork(watchAuth),
+    fork(watchLogin),
+    fork(watchLogout),
   ]
 }

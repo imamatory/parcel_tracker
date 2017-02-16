@@ -1,4 +1,5 @@
 import { normalize } from 'normalizr'
+import { isObjectLike } from 'lodash'
 import axios from 'axios'
 
 import Schemas from './schema'
@@ -7,14 +8,13 @@ import Schemas from './schema'
 const callApi = (params = {}) => {
   const defaultParams = {
     url: '',
-    actionName: '',
     schema: null,
     method: 'GET',
     data: {},
   }
   const p = Object.assign({}, defaultParams, params)
 
-  const fullUrl = `${p.url}${p.url.endsWith('/') ? '' : '/'}${p.actionName}`
+  const fullUrl = `${p.url}${p.url.endsWith('/') ? '' : '/'}`
   const method = p.method
   const dataParamName = method === 'POST' ? 'data' : 'params'
 
@@ -26,38 +26,38 @@ const callApi = (params = {}) => {
     // paramsSerializer: params =>
     //   qs.stringify(params, { encode: false }),
   })
-    .then(response => normalize(response.data, p.schema))
+    .then(response => (isObjectLike(response.data) ?
+      normalize(response.data, p.schema) : response))
     .then(
       response => ({ response }),
       error => ({ error: error.message || 'Error while fetching' }),
     )
 }
 
-export const fetchParcelsList = (id = '', _, data) => callApi({
+export const fetchParcelsList = ({ id = '' }, _, data) => callApi({
   url: `/api/parcels/${id}`,
   schema: Schemas.PARCELS,
   method: 'GET',
   data,
 })
 
-export const fetchParcelLogsList = (id = '') => callApi({
-  url: `/api/parcel_logs/${id}`,
+export const fetchParcelLogsList = ({ trackCode = '', id = '' }) => callApi({
+  url: `/api/parcel_logs/${id || trackCode}`,
   schema: Schemas.PARCEL_LOGS,
   method: 'GET',
 })
 
-export const submitParcelLog = (id = '', actionName = '', data) => callApi({
-  url: `/api/parcels/${id}/parcel_logs`,
+export const submitParcelLog = ({ trackCode = '', id = '' }, method, data) => callApi({
+  id: { id },
+  url: `/api/parcels/${trackCode}/parcel_logs/${id}`,
   schema: Schemas.PARCEL_LOGS,
-  method: 'POST',
-  actionName,
+  method: method || 'POST',
   data,
 })
 
-export const submitParcel = (id = '', actionName = '', data) => callApi({
+export const submitParcel = ({ id = '' }, method, data) => callApi({
   url: `/api/parcels/${id}`,
   schema: Schemas.PARCELS,
-  method: 'POST',
-  actionName,
+  method: method || 'POST',
   data,
 })

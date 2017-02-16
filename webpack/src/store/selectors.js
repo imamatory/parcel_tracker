@@ -19,5 +19,10 @@ const entityByIds = (getEntities, getListIds) =>
       listIds.reduce((acc, id) => acc.concat(entities[id] || []), [])
   )
 
+export const getIsUserLoggedIn = createSelector(
+    getUserData,
+    userData => Object.keys(userData).length > 0
+  )
+
 export const getParcelsList = entityByIds(getParcels, getParcelIds)
 export const getCurrentParcelLog = entityByIds(getParcelLogs, getParcelLogIds)

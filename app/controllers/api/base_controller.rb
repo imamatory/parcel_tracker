@@ -32,15 +32,15 @@ module Api
     end
 
     def destroy
-      @resource.find_by!(track_code: params[:track_code]).destroy
+      resource_get.destroy
       head :no_content
     end
 
     def update
-      if @resource.find_by!(track_code: params[:track_code]).update(params)
+      if resource_get.update(resource_params)
         render :show
       else
-        render json: @resource.errors, status: :unprocessable_entity
+        render json: resource_get.errors, status: :unprocessable_entity
       end
     end
 

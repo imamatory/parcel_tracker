@@ -11,44 +11,47 @@ const createRequestCallbacks = requestActionType => ({
   failure: error => action(requestActionType.FAILURE, { error }),
 })
 
-// ИЗБЫТОЧНО!! достаточно одного набора RequestCallbacks для сопровождения любого запроса?
 const loadParcelsRequest = createRequestCallbacks(types.ENTITIES_LIST)
 const loadParcelLogsRequest = createRequestCallbacks(types.ENTITIES_LIST)
 const submitParcelLogRequest = createRequestCallbacks(types.SUBMIT_FORM)
 const submitParcelRequest = createRequestCallbacks(types.SUBMIT_FORM)
 
-export const loadParcels = data => action(types.FETCH_ENTITIES_LIST,
+export const loadParcels = (id = {}) => action(types.FETCH_ENTITIES_LIST,
   {
-    data,
+    id,
     entityRequestActions: loadParcelsRequest,
     apiFun: api.fetchParcelsList,
+    isUserDataNeeded: true,
   })
 
-export const loadParcelLogs = id => action(types.FETCH_ENTITIES_LIST,
+export const loadParcelLogs = (id = {}) => action(types.FETCH_ENTITIES_LIST,
   {
     id,
     entityRequestActions: loadParcelLogsRequest,
     apiFun: api.fetchParcelLogsList,
   })
 
-export const submitParcelLogForm = (actionName, id) => data => action(types.SUBMIT_ENTITY_FORM,
+export const submitParcelLogForm = (method, id = {}) => data => action(types.SUBMIT_ENTITY_FORM,
   {
     id,
-    actionName,
+    method,
     entityRequestActions: submitParcelLogRequest,
     apiFun: api.submitParcelLog,
     data,
+    nextAction: () => loadParcelLogs({ trackCode: id.trackCode }),
   })
 
-export const submitParcelForm = (actionName, id) => data => action(types.SUBMIT_ENTITY_FORM,
+export const submitParcelForm = (method, id = {}) => data => action(types.SUBMIT_ENTITY_FORM,
   {
     id,
-    actionName,
+    method,
     entityRequestActions: submitParcelRequest,
     apiFun: api.submitParcel,
     data,
+    nextAction: loadParcels,
   })
 
 export const setEditorMode = () => action(types.SET_EDITOR_MODE)
 
 export const submitUserData = data => action(types.SUBMIT_USER_DATA, data)
+export const resetUserData = () => action(types.RESET_USER)
