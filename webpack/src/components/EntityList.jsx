@@ -5,6 +5,7 @@ class EntityList extends React.Component {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.object),
     itemComponent: PropTypes.func,
+    isEditorMode: PropTypes.bool,
   }
 
   isChecked = item => item && item.status

@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
+import { Field } from 'redux-form'
 
 const FieldForm = (props) => {
   const { type, input, meta, children, optionList } = props
   const controlProps = {
-    [type === 'select' ? 'componentClass' : 'type']: type,
+    [type === 'select' ? 'component' : 'type']: type,
     ...input,
   }
 
@@ -12,11 +13,12 @@ const FieldForm = (props) => {
     <FormGroup controlId={input.name} validationState={meta.error ? 'error' : null}>
       <ControlLabel>{children}</ControlLabel>
       { optionList ?
-        <select {...controlProps} className="form-control">
-          {optionList.map(({ name, value }) =>
-            <option key={value} value={value}>{name}</option>
+        <Field {...controlProps} className="form-control">
+          <option key={0} value="">{''}</option>
+          {optionList.map(({ name, value }, idx) =>
+            <option key={idx + 1} value={value}>{name}</option>
           )}
-        </select>
+        </Field>
         : <FormControl {...controlProps} />
       }
       { meta.touched && meta.error && <span>{meta.error}</span>}

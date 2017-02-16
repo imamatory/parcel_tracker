@@ -1,13 +1,49 @@
 import React, { PropTypes } from 'react'
-import { Navbar, Col } from 'react-bootstrap'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { Navbar, Col, Nav, NavItem } from 'react-bootstrap'
+import { Link, browserHistory } from 'react-router'
 
-const App = ({ children }) =>
+import { resetUserData } from '../actions'
+import { getLinkPrefix } from '../routes'
+import { getIsEditorMode, getIsUserLoggedIn } from '../store/selectors'
+
+const forwardToManage = () => browserHistory.push('/manage')
+
+const App = ({ children, isEditorMode, resetUser, isUserLoggedIn }) =>
   (
     <div>
-      <Navbar className="navbar__custom">
+      <Navbar className="navbar__custom" collapseOnSelect>
         <Navbar.Header>
-          <Navbar.Brand>Parcels traker</Navbar.Brand>
+          <Navbar.Brand>
+            <Link to={`${getLinkPrefix(isEditorMode)}/parcels/`}>
+              {'Parcels tracker '}
+              { isEditorMode ?
+                <b>Manager</b> : ''
+              }
+            </Link>
+          </Navbar.Brand>
+          <Navbar.Toggle />
         </Navbar.Header>
+        <Navbar.Collapse>
+          <Nav pullRight>
+            {
+              isEditorMode || isUserLoggedIn ?
+                <NavItem onClick={resetUser}>
+                  <span className="navbar__link">
+                    { isEditorMode ? 'Switch to user' : 'Exit' }
+                  </span>
+                </NavItem> : ''
+            }{
+              !isEditorMode ?
+                <NavItem onClick={forwardToManage}>
+                  <span className="navbar__link">
+                    {'Edit'}
+                  </span>
+                </NavItem> : ''
+            }
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
       <Col sm={8} smOffset={2}>
         <Col xs={8} xsOffset={2}>
@@ -19,6 +55,18 @@ const App = ({ children }) =>
 
 App.propTypes = {
   children: PropTypes.node,
+  isEditorMode: PropTypes.bool,
+  isUserLoggedIn: PropTypes.bool,
+  resetUser: PropTypes.func,
 }
 
-export default App
+const mapStateToProps = state => ({
+  isEditorMode: getIsEditorMode(state),
+  isUserLoggedIn: getIsUserLoggedIn(state),
+})
+
+const mapDispatchToProps = dispatch => ({
+  resetUser: bindActionCreators(resetUserData, dispatch),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

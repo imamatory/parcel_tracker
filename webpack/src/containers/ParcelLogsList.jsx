@@ -8,7 +8,7 @@ import EntityList from '../components/EntityList'
 import { loadParcelLogs, submitParcelLogForm } from '../actions'
 import { ListActions, Edit, ParcelLogForm } from '../containers'
 import { getCurrentParcelLog, getIsFetching, getIsEditorMode } from '../store/selectors'
-import { linkPrefix } from '../routes'
+import { getLinkPrefix } from '../routes'
 
 
 class ParcelLogsList extends React.Component {
@@ -24,7 +24,7 @@ class ParcelLogsList extends React.Component {
 
   constructor(props) {
     super(props)
-    props.fetchItems(this.props.trackCode)
+    props.fetchItems({ id: this.props.trackCode })
   }
 
   render() {
@@ -32,12 +32,12 @@ class ParcelLogsList extends React.Component {
        routeAction, isEditorMode, router } = this.props
     return (
       <div>
-        <h1>{`Parcel log for ${trackCode}`}</h1>
-        <Link to={`${linkPrefix(isEditorMode)}/parcels`} >Back to list</Link>
+        <h1>{'Parcel log for '}<i>{trackCode}</i></h1>
+        <Link to={`${getLinkPrefix(isEditorMode)}/parcels`} >Back to list</Link>
         <br />
         { isFetching ? 'Records are loading...' : '' }
         <ListActions
-          updateListFn={() => fetchItems(trackCode)}
+          updateListFn={() => fetchItems({ id: trackCode })}
           buttons={[
             {
               url: `/manage/parcel_logs/${trackCode}/?action=new`,
@@ -46,12 +46,12 @@ class ParcelLogsList extends React.Component {
           ]}
         />
         { items.length ?
-          <EntityList items={items} itemComponent={ParcelLog} />
+          <EntityList items={items} itemComponent={ParcelLog} isEditorMode={isEditorMode} />
           : 'No notes'
         }
         { routeAction === 'new' ?
           <Edit
-            onSubmitAction={submitParcelLogForm('', trackCode)}
+            onSubmitAction={submitParcelLogForm('POST', { trackCode })}
             formComponent={ParcelLogForm}
             router={router}
           /> : ''

@@ -1,8 +1,11 @@
 import React, { PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { Media } from 'react-bootstrap'
+import { Media, Button } from 'react-bootstrap'
 
-import { linkPrefix } from '../routes'
+import { submitParcelForm } from '../actions'
+import { getLinkPrefix } from '../routes'
 import { POST_STATUSES } from '../constants/'
 
 export const getStatusNameByCode = (code) => {
@@ -10,16 +13,25 @@ export const getStatusNameByCode = (code) => {
   return status && status.name ? status.name : ''
 }
 
-const Parcel = ({ trackCode, date, postStatus, isEditorMode }) => (
-  <div>
+const makeHandleOnClickDelete = (trackCode, deleteCb) => () => {
+  confirm(`Delete parcel ${trackCode}?`) && deleteCb()
+}
+
+const Parcel = ({ trackCode, date, postStatus, isEditorMode, deleteParcel }) => (
+  <div className={postStatus === 'received' ? 'muted' : ''}>
     <Media.Body>
       <Media.Heading>
-        <Link to={`${linkPrefix(isEditorMode)}/parcel_logs/${trackCode}`}>{trackCode}</Link>
+        <Link to={`${getLinkPrefix(isEditorMode)}/parcel_logs/${trackCode}`}>{trackCode}</Link>
       </Media.Heading>
       <div>{date}</div>
     </Media.Body>
     <Media.Right>
-      <b className="nobr">{getStatusNameByCode(postStatus)}</b>
+      { isEditorMode ?
+        <Button onClick={makeHandleOnClickDelete(trackCode, deleteParcel)} className="close">
+          <span>×</span>
+        </Button> : ''
+      }
+      <b className={`nobr post-status post-status__${postStatus}`}>{getStatusNameByCode(postStatus)}</b>
     </Media.Right>
   </div>
 )
@@ -27,8 +39,13 @@ const Parcel = ({ trackCode, date, postStatus, isEditorMode }) => (
 Parcel.propTypes = {
   trackCode: PropTypes.string.isRequired,
   postStatus: PropTypes.string.isRequired,
+  deleteParcel: PropTypes.func.isRequired,
   isEditorMode: PropTypes.bool,
   date: PropTypes.string,
 }
 
-export default Parcel
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  deleteParcel: bindActionCreators(submitParcelForm('DELETE', { id: ownProps.trackCode }), dispatch),
+})
+
+export default connect(null, mapDispatchToProps)(Parcel)

@@ -56,4 +56,4 @@ export const routes = store => [{
   ],
 }]
 
-export const linkPrefix = isEditorMode => (isEditorMode === true ? '/manage' : '')
+export const getLinkPrefix = isEditorMode => (isEditorMode === true ? '/manage' : '')

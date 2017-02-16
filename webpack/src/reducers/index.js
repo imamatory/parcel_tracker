@@ -67,18 +67,22 @@ const isEditorMode = (state = false, action) => {
   if (action.type === types.SET_EDITOR_MODE) {
     return true
   }
+  if (action.type === types.RESET_USER) {
+    return false
+  }
   return state
 }
 
 const userData = (state = {}, action) => {
-  if (action.type === types.SUBMIT_USER_DATA) {
-    const { phone, trackCode } = action
-    return {
-      phone,
-      trackCode,
-    }
+  switch (action.type) {
+    case types.SUBMIT_USER_DATA:
+      const { phone, trackCode } = action
+      return { phone, trackCode }
+    case types.RESET_USER:
+      return {}
+    default:
+      return state
   }
-  return state
 }
 
 
