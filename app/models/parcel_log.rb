@@ -11,8 +11,11 @@ class ParcelLog < ApplicationRecord
   validates :msg, presence: true
 
   validates_each :post_status do |record, attr, value|
-    if record.parcel && Parcel.post_statuses[record.parcel.post_status] > Parcel.post_statuses[value]
-      record.errors.add(attr, 'has wrong status transition')
+    unless value.nil?
+      statuses = Parcel.post_statuses
+      if record.parcel && statuses[record.parcel.post_status] > statuses[value]
+        record.errors.add(attr, 'has wrong status transition')
+      end
     end
   end
 
