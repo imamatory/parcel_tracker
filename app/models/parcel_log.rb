@@ -19,12 +19,19 @@ class ParcelLog < ApplicationRecord
     end
   end
 
-  after_save :update_post_status
+  after_save :update_parcel_post_status
+  after_destroy :set_previous_parcel_post_status
 
   private
 
-    def update_post_status
+    def update_parcel_post_status
       self.parcel.post_status = post_status
+      self.parcel.save
+    end
+
+    def set_previous_parcel_post_status
+      last_log = self.class.all.order("created_at").last
+      self.parcel.post_status = last_log.post_status
       self.parcel.save
     end
 
