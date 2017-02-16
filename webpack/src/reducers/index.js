@@ -79,6 +79,7 @@ const userData = (state = {}, action) => {
       const { phone, trackCode } = action
       return { phone, trackCode }
     case types.RESET_USER:
+    case types.SET_EDITOR_MODE:
       return {}
     default:
       return state
