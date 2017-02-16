@@ -1,5 +1,6 @@
 import { normalize } from 'normalizr'
 import { isObjectLike } from 'lodash'
+import snakeCaseKeys from 'snakecase-keys'
 import axios from 'axios'
 
 import Schemas from './schema'
@@ -16,21 +17,25 @@ const callApi = (params = {}) => {
 
   const fullUrl = `${p.url}${p.url.endsWith('/') ? '' : '/'}`
   const method = p.method
-  const dataParamName = method === 'POST' ? 'data' : 'params'
-
+  const dataParamName = method === 'POST' || method === 'PATCH' ? 'data' : 'params'
+// console.log({
+//   method,
+//   [dataParamName]: isObjectLike(p.data) ?
+//     snakeCaseKeys(p.data, { deep: true }) : p.data,
+//   headers: { 'X-Requested-With': 'XMLHttpRequest' },
+// });
   return axios(fullUrl, {
     method,
-    [dataParamName]: p.data,
+    [dataParamName]: isObjectLike(p.data) ?
+      snakeCaseKeys(p.data, { deep: true }) : p.data,
     headers: { 'X-Requested-With': 'XMLHttpRequest' },
-    //headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    // paramsSerializer: params =>
-    //   qs.stringify(params, { encode: false }),
   })
-    .then(response => (isObjectLike(response.data) ?
-      normalize(response.data, p.schema) : response))
+    .then(response => (isObjectLike(response.data) && p.schema !== null ?
+        normalize(response.data, p.schema) : response
+      ))
     .then(
       response => ({ response }),
-      error => ({ error: error.message || 'Error while fetching' }),
+      error => ({ error }),
     )
 }
 

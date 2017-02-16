@@ -1,5 +1,9 @@
+require 'camel_json'
+
 module Api
   class BaseController < ApplicationController
+    include CamelJson
+
     respond_to :json
     rescue_from ActiveRecord::RecordNotFound,       with: :record_not_found
     rescue_from ActiveRecord::RecordInvalid,        with: :record_invalid
@@ -27,7 +31,7 @@ module Api
       if resource_get.save
         render :show, status: :created
       else
-        render json: resource_get.errors, status: :unprocessable_entity
+        render json: camelize_keys(resource_get.errors), status: :unprocessable_entity
       end
     end
 
@@ -40,7 +44,7 @@ module Api
       if resource_get.update(resource_params)
         render :show
       else
-        render json: resource_get.errors, status: :unprocessable_entity
+        render json: camelize_keys(resource_get.errors), status: :unprocessable_entity
       end
     end
 
