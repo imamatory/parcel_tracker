@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router'
 
 import * as actions from '../actions'
 import * as types from '../actions/Types'
-import { getUserData, getIsUserLoggedIn } from '../store/selectors'
+import { getUserData, getIsUserLoggedIn, getParcelLogTrackCode } from '../store/selectors'
 import { API_FETCH_DELAY } from '../constants'
 
 
@@ -82,8 +82,8 @@ function* watchAfterSubmitRedirect() {
 }
 
 function* watchLogin() {
-  yield takeEvery(types.SUBMIT_USER_DATA, () => {
-    forwardTo('/parcels/')
+  yield takeEvery(types.SUBMIT_USER_DATA, ({ trackCode }) => {
+    forwardTo(`/parcels/${trackCode}/parcel_logs`)
   })
 }
 

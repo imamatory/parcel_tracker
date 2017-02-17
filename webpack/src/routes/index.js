@@ -2,7 +2,7 @@ import { browserHistory } from 'react-router'
 
 import { App, ParcelsList, ParcelLogsList, UserAuthForm } from '../containers/'
 import { setEditorMode } from '../actions'
-import { getUserData } from '../store/selectors'
+import { getIsUserLoggedIn } from '../store/selectors'
 
 const enableEditorMode = (dispatch) => {
   dispatch(setEditorMode())
@@ -11,8 +11,7 @@ const enableEditorMode = (dispatch) => {
 const verifyUserAuth = (store) => {
   const state = store.getState()
 
-  const { phone, trackCode } = getUserData(state)
-  if (!phone || !trackCode) {
+  if (!getIsUserLoggedIn(state)) {
     browserHistory.push('/')
   }
 }
