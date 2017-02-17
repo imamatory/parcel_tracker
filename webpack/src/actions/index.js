@@ -39,6 +39,11 @@ export const submitParcelLogForm = (method, id = {}) => data => action(types.SUB
     apiFun: api.submitParcelLog,
     data,
     nextAction: () => loadParcelLogs({ trackCode: id.trackCode }),
+    nextUrl: ({ trackCode, id }) => `/manage/parcels/${trackCode}/parcel_logs/${id}/?action=edit&saved=true`,
+    getNextUrlParam: (respData) => {
+      const { trackCode, id } = Object.values(respData.parcelLogs)[0]
+      return { trackCode, id }
+    },
   })
 
 export const submitParcelForm = (method, id = {}) => data => action(types.SUBMIT_ENTITY_FORM,
@@ -49,6 +54,8 @@ export const submitParcelForm = (method, id = {}) => data => action(types.SUBMIT
     apiFun: api.submitParcel,
     data,
     nextAction: loadParcels,
+    nextUrl: trackCodeReplace => `/manage/parcels/${trackCodeReplace}/?action=edit&saved=true`,
+    getNextUrlParam: respData => Object.values(respData.parcels)[0].trackCode,
   })
 
 export const setEditorMode = () => action(types.SET_EDITOR_MODE)
