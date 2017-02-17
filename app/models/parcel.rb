@@ -17,7 +17,7 @@ class Parcel < ApplicationRecord
   end
 
   validates_each :track_code do |record, attr, value|
-    if record.changed? && record.persisted?
+    if record.track_code_changed? && record.persisted?
       record.errors.add(attr, 'forbidden to update')
     end
   end
