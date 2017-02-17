@@ -20,12 +20,11 @@ const injectUserData = (obj, userData) =>
   })
 
 function* fetchEntity(action) {
-  // console.log(action);
   const { entityRequestActions: entity, apiFun, id, method, data } = action
   yield put(entity.request(id))
   const { response, error } = yield call(apiFun, id, method, data)
   if (response) {
-    yield put(entity.success(response, id))
+    yield put(entity.success({ ...action, ...response }, id))
 
     if (action.nextAction) {
       yield put(action.nextAction())
@@ -70,6 +69,18 @@ function* watchSubmit() {
   yield takeEvery(types.SUBMIT_ENTITY_FORM, callFetchEntity)
 }
 
+function* watchAfterSubmitRedirect() {
+  yield takeEvery(types.SUBMIT_FORM.SUCCESS, (action) => {
+    if (action.response) {
+      const { nextUrl, getNextUrlParam, entities } = action.response
+      if (nextUrl && getNextUrlParam && entities) {
+        console.log(getNextUrlParam(entities));
+        forwardTo(nextUrl(getNextUrlParam(entities)))
+      }
+    }
+  })
+}
+
 function* watchLogin() {
   yield takeEvery(types.SUBMIT_USER_DATA, () => {
     forwardTo('/parcels/')
@@ -98,7 +109,7 @@ export default function* rootSaga() {
     // fork(watchPollparcelsApi),
     fork(watchCallApiAsync),
     fork(watchSubmit),
-    fork(watchSubmitFormSuccess),
+    fork(watchAfterSubmitRedirect),
     fork(watchLogin),
     fork(watchLogout),
   ]

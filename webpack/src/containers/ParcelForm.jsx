@@ -1,22 +1,23 @@
 import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, hasSubmitSucceeded } from 'redux-form'
 import { Button, Alert } from 'react-bootstrap'
 
 import FieldForm from '../components/FieldForm'
 
+
 const ParcelForm = (props) => {
-  const { handleSubmit, onSubmit, pristine, submitting, error } = props
+  const { handleSubmit, onSubmit, pristine, submitting, submitSucceeded, initialValues } = props
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      { error ?
-        <Alert bsStyle="danger">
-          {error}
-        </Alert> : ''
+      {
+        submitSucceeded && pristine ?
+          <Alert bsStyle="success">{'Saved!'}</Alert>
+          : ''
       }
-      <Field name="trackCode" component={FieldForm} type="text">
+      <Field disabled={!!initialValues} name="trackCode" component={FieldForm} type="text">
         {"Parcel's track code"}
       </Field>
       <Field name="phone" component={FieldForm} type="text">
@@ -36,6 +37,7 @@ const ParcelForm = (props) => {
 }
 
 ParcelForm.propTypes = {
+  submitSucceeded: PropTypes.bool.isRequired,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
@@ -43,15 +45,13 @@ ParcelForm.propTypes = {
   error: PropTypes.string,
 }
 
+
 export default connect(
   (state, ownProps) => ({
     initialValues: ownProps.getData,
+    submitSucceeded: hasSubmitSucceeded('parcel')(state),
   }),
   (dispatch, ownProps) => ({
     onSubmit: bindActionCreators(ownProps.onSubmitAction, dispatch),
   })
-)(
-  reduxForm({
-    form: 'parcel',
-  }
-)(ParcelForm))
+)(reduxForm({ form: 'parcel' })(ParcelForm))
