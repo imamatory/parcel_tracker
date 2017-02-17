@@ -34,21 +34,6 @@ function* fetchEntity(action) {
   }
 }
 
-// function* pollParcelsListApi() {
-//   try {
-//     yield call(delay, API_FETCH_DELAY)
-//     yield call(fetchParcelsList)
-//   } catch (e) {
-//     return
-//   }
-// }
-
-
-// function* callFetchEntity(action) {
-//   const userData = yield select(getUserData)
-//   yield call(fetchEntity, injectUserData(action, userData))
-// }
-
 function* callFetchEntity(action) {
   const { isUserDataNeeded } = action
   const isLoggedIn = yield select(getIsUserLoggedIn)
@@ -93,20 +78,34 @@ function* watchLogout() {
   })
 }
 
-function* watchSubmitFormSuccess() {
-  yield takeEvery(types.SUBMIT_FORM.SUCCESS, (action) => {
-    // console.log(action);
-    // forwardTo('/')
-  })
+function* pollParcelsListApi() {
+  yield call(delay, API_FETCH_DELAY)
+  yield put({ ...actions.loadParcels(), isAutoPoll: true })
+
+  const trackCode = yield select(getParcelLogTrackCode)
+
+  if (trackCode) {
+    yield put({ ...actions.loadParcelLogs({ trackCode }), isAutoPoll: true })
+  }
 }
 
-// export function* watchPollparcelsApi() {
-//   yield throttle(API_FETCH_DELAY, types.FETCH_PARCELS_LIST.SUCCESS, pollParcelsListApi)
-// }
+export function* watchPollEntityApi() {
+  const pattern = (action) => {
+    switch (action.type) {
+      case types.ENTITIES_LIST.SUCCESS:
+      case types.START_POLL_ENTITIES:
+        return true
+      default:
+        return false
+    }
+  }
+
+  yield throttle(API_FETCH_DELAY, pattern, pollParcelsListApi)
+}
 
 export default function* rootSaga() {
   yield [
-    // fork(watchPollparcelsApi),
+    fork(watchPollEntityApi),
     fork(watchCallApiAsync),
     fork(watchSubmit),
     fork(watchAfterSubmitRedirect),
