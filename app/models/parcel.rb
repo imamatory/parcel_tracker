@@ -7,11 +7,18 @@ class Parcel < ApplicationRecord
 
   default_scope { order('created_at DESC') }
 
-  validates :phone, numericality: { only_integer: true }
-  validates :track_code, uniqueness: true
+  validates :phone, presence: true, numericality: { only_integer: true }
+  validates :track_code, presence: true, uniqueness: true
+
   validates_each :post_status do |record, attr, value|
     if Parcel.post_statuses[record.post_status] > Parcel.post_statuses[value]
-      record.errors.add(attr, 'has wrong status transition')
+      record.errors.add(attr, 'wrong status transition')
+    end
+  end
+
+  validates_each :track_code do |record, attr, value|
+    if record.changed? && record.persisted?
+      record.errors.add(attr, 'forbidden to update')
     end
   end
 
