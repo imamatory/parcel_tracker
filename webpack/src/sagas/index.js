@@ -59,7 +59,6 @@ function* watchAfterSubmitRedirect() {
     if (action.response) {
       const { nextUrl, getNextUrlParam, entities } = action.response
       if (nextUrl && getNextUrlParam && entities) {
-        console.log(getNextUrlParam(entities));
         forwardTo(nextUrl(getNextUrlParam(entities)))
       }
     }

@@ -17,11 +17,3 @@ const renderRoot = () => {
 }
 
 renderRoot()
-
-// if (module.hot) {
-//   module.hot.accept('./containers/App', () => {
-//     const updatedApp = require('./containers/App') // eslint-disable-line global-require
-//
-//     renderRoot(updatedApp)
-//   })
-// }

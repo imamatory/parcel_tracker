@@ -18,21 +18,20 @@ const callApi = (params = {}) => {
   const fullUrl = `${p.url}${p.url.endsWith('/') ? '' : '/'}`
   const method = p.method
   const dataParamName = method === 'POST' || method === 'PATCH' ? 'data' : 'params'
-// console.log({
-//   method,
-//   [dataParamName]: isObjectLike(p.data) ?
-//     snakeCaseKeys(p.data, { deep: true }) : p.data,
-//   headers: { 'X-Requested-With': 'XMLHttpRequest' },
-// });
+
   return axios(fullUrl, {
     method,
     [dataParamName]: isObjectLike(p.data) ?
       snakeCaseKeys(p.data, { deep: true }) : p.data,
     headers: { 'X-Requested-With': 'XMLHttpRequest' },
   })
-    .then(response => (isObjectLike(response.data) && p.schema !== null ?
-        normalize(response.data, p.schema) : response
-      ))
+    .then((response) => {
+      if (isObjectLike(response.data) && p.schema !== null) {
+        return normalize(response.data, p.schema)
+      } else {
+        return response
+      }
+    })
     .then(
       response => ({ response }),
       error => ({ error }),

@@ -5,7 +5,6 @@ import createSagaMiddleware, { END } from 'redux-saga'
 
 import rootSaga from '../sagas'
 import rootReducer from '../reducers'
-// import DevTools from '../containers/DevTools';
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -28,20 +27,11 @@ const configureStore = (initialState) => {
       applyMiddleware(
         ...middleware
       ),
-      // DevTools.instrument()
     ),
   )
 
   sagaMiddleware.run(rootSaga)
   store.close = () => store.dispatch(END)
-
-  // if (module.hot) {
-  //   // Enable Webpack hot module replacement for reducers
-  //   module.hot.accept('../reducers', () => {
-  //     const nextRootReducer = require('../reducers').default
-  //     store.replaceReducer(nextRootReducer)
-  //   })
-  // }
 
   return store
 }

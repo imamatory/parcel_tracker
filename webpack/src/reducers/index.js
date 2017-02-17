@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
-// import { merge } from 'lodash'
+
 import * as types from '../actions/Types'
 
 const entitiesInitialState = {
