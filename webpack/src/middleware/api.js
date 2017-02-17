@@ -1,10 +1,16 @@
 import { normalize } from 'normalizr'
-import { isObjectLike } from 'lodash'
-import snakeCaseKeys from 'snakecase-keys'
+import { isObject } from 'lodash'
+import snakeCase from 'to-snake-case'
 import axios from 'axios'
 
 import Schemas from './schema'
 
+const snakeCaseKeys = obj => Object.keys(obj)
+  .reduce((acc, key) => {
+    const snakeKey = snakeCase(key)
+    acc[snakeKey] = isObject(obj[key]) ? snakeCaseKeys(obj[key]) : obj[key]
+    return acc
+  }, {})
 
 const callApi = (params = {}) => {
   const defaultParams = {
@@ -21,12 +27,12 @@ const callApi = (params = {}) => {
 
   return axios(fullUrl, {
     method,
-    [dataParamName]: isObjectLike(p.data) ?
+    [dataParamName]: isObject(p.data) ?
       snakeCaseKeys(p.data, { deep: true }) : p.data,
     headers: { 'X-Requested-With': 'XMLHttpRequest' },
   })
     .then((response) => {
-      if (isObjectLike(response.data) && p.schema !== null) {
+      if (isObject(response.data) && p.schema !== null) {
         return normalize(response.data, p.schema)
       } else {
         return response
