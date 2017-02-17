@@ -19,7 +19,7 @@ module Api
       if resource_get.save
         render :show, status: :created
       else
-        render json: resource_get.errors, status: :unprocessable_entity
+        render json: camelize_keys(resource_get.errors), status: :unprocessable_entity
       end
     end
 
