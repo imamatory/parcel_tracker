@@ -14,7 +14,7 @@ class ParcelLog < ApplicationRecord
     unless value.nil?
       statuses = Parcel.post_statuses
       if record.parcel && statuses[record.parcel.post_status] > statuses[value]
-        record.errors.add(attr, 'has wrong status transition')
+        record.errors.add(attr, 'wrong status transition')
       end
     end
   end

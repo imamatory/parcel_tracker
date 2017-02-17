@@ -16,6 +16,7 @@ export const SET_EDITOR_MODE = 'SET_EDITOR_MODE'
 export const SUBMIT_ENTITY_FORM = 'SUBMIT_ENTITY_FORM'
 export const SUBMIT_USER_DATA = 'SUBMIT_USER_DATA'
 export const RESET_USER = 'RESET_USER'
+export const START_POLL_ENTITIES = 'START_POLL_ENTITIES'
 
 // Complex types
 export const ENTITIES_LIST = createRequestTypes(FETCH_ENTITIES_LIST)

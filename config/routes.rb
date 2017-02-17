@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   get '/manage/(.:format)', to: 'parcels#index'
   get '/manage/parcels/(:id)(.:format)', to: 'parcels#index'
-  get '/manage/parcels/:track_code/parcel_logs/(:id)(.:format)', to: 'parcels#index'
+  get '/(manage)/parcels/:track_code/parcel_logs/(:id)(.:format)', to: 'parcels#index'
 
   root 'parcels#index'
 

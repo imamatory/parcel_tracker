@@ -1,4 +1,4 @@
-export const API_FETCH_DELAY = 5000
+export const API_FETCH_DELAY = 10 * 1000
 
 export const POST_STATUSES = [
   {

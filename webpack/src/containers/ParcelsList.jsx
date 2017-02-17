@@ -44,6 +44,7 @@ class ParcelsList extends React.Component {
         item={parcel}
         formComponent={ParcelForm}
         router={router}
+        title={parcel ? 'Edit' : 'Create'}
       />
     )
   }

@@ -45,7 +45,7 @@ const App = ({ children, isEditorMode, resetUser, isUserLoggedIn }) =>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <Col sm={8} smOffset={2}>
+      <Col sm={10} smOffset={1}>
         <Col xs={8} xsOffset={2}>
           {children}
         </Col>

@@ -22,6 +22,9 @@ class ParcelLogsList extends React.Component {
     routeAction: PropTypes.string,
     currentParcelLog: PropTypes.object,
     router: PropTypes.object,
+    params: PropTypes.shape({
+      trackCode: PropTypes.string.isRequired,
+    }),
   }
 
   constructor(props) {
@@ -39,7 +42,6 @@ class ParcelLogsList extends React.Component {
   makeEditComponent = (router, trackCode, parcelLog) => {
     const method = parcelLog ? 'PATCH' : 'POST'
     const identity = this.props.params
-    console.log(identity);
 
     return (
       <Edit
@@ -47,6 +49,7 @@ class ParcelLogsList extends React.Component {
         item={parcelLog}
         formComponent={ParcelLogForm}
         router={router}
+        title={parcelLog ? 'Edit' : 'Create'}
       />
     )
   }
@@ -62,7 +65,7 @@ class ParcelLogsList extends React.Component {
         <br />
         { isFetching ? 'Records are loading...' : '' }
         <ListActions
-          updateListFn={() => fetchItems({ id: trackCode })}
+          updateListFn={() => fetchItems({ trackCode })}
           buttons={[
             {
               url: `/manage/parcels/${trackCode}/parcel_logs/?action=new`,

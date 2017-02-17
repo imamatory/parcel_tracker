@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
-import { merge } from 'lodash'
+// import { merge } from 'lodash'
 import * as types from '../actions/Types'
 
 const entitiesInitialState = {
@@ -8,14 +8,6 @@ const entitiesInitialState = {
   parcelLogs: {},
   postStatuses: {},
 }
-
-// const parcels = (state = [], action) => {
-//   if (action.type === types.FETCH_ENTITIES_LIST.SUCCESS) {
-//     const parcels = action.response.entities.parcels
-//     return Object.keys(parcels)
-//   }
-//   return state
-// }
 
 const entities = (state = entitiesInitialState, action) => {
   if (action.response && action.response.entities) {
@@ -42,7 +34,7 @@ const listsParserLogs = (state = listsParserLogsInitialState, action) => {
   if (action.response && action.response.result && action.response.result.parcelLogs) {
     return Object.assign({}, state,
       {
-        trackCode: action.response.result.track_num,
+        trackCode: action.name.trackCode,
         logs: action.response.result.parcelLogs,
       }
     )
@@ -76,8 +68,8 @@ const isEditorMode = (state = false, action) => {
 const userData = (state = {}, action) => {
   switch (action.type) {
     case types.SUBMIT_USER_DATA:
-      const { phone, trackCode } = action
-      return { phone, trackCode }
+      const { phone } = action
+      return { phone }
     case types.RESET_USER:
     case types.SET_EDITOR_MODE:
       return {}
@@ -98,7 +90,7 @@ const submitErrorsReducer = (state, action) => {
         return {
           ...state,
           asyncErrors: {
-            error: action.error
+            error: action.error,
           },
         }
       }

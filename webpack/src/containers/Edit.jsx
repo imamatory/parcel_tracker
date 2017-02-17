@@ -5,10 +5,11 @@ import { Button, Modal } from 'react-bootstrap'
 
 class Edit extends React.Component {
   static propTypes = {
-    onSubmitAction: PropTypes.func,
-    item: PropTypes.object,
+    onSubmitAction: PropTypes.func.isRequired,
     formComponent: PropTypes.func.isRequired,
-    router: PropTypes.object,
+    router: PropTypes.object.isRequired,
+    title: PropTypes.string.isRequired,
+    item: PropTypes.object,
   }
 
   constructor(props) {
@@ -27,11 +28,11 @@ class Edit extends React.Component {
   }
 
   render() {
-    const { item, onSubmitAction, formComponent: FormComponemt } = this.props
+    const { item, onSubmitAction, formComponent: FormComponemt, title } = this.props
     return (
       <Modal show={this.state.showModal} onHide={this.close}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <FormComponemt

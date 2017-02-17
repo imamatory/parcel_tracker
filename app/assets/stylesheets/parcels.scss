@@ -62,7 +62,7 @@ body {
 
   .post-status {
     position: absolute;
-    top: 25px;
+    top: 35px;
     right: 20px;
     color: #1694bf;
 
@@ -71,8 +71,12 @@ body {
     }
   }
 
-  .date {
-    font-size: 12px;
-    margin-left: 20px;
+  .media__data {
+    font-size: 13px;
+  }
+
+  .media__link {
+    font-size: 13px;
+    margin-right: 15px;
   }
 }

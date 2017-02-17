@@ -4,12 +4,13 @@ import { Field } from 'redux-form'
 
 
 const FieldForm = (props) => {
-  const { type, input, meta, children, optionList } = props
+  const { type, input, meta, children, optionList, disabled } = props
   const controlProps = {
     ...input,
+    disabled,
     [type === 'select' ? 'component' : 'type']: type,
   }
-console.log(meta);
+
   return (
     <FormGroup controlId={input.name} validationState={meta.error ? 'error' : null}>
       <ControlLabel>{children}</ControlLabel>

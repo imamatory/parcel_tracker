@@ -23,15 +23,16 @@ const urlForEdit = (isEditorMode, trackCode) =>
 const urlForLog = (isEditorMode, trackCode) =>
   `${getLinkPrefix(isEditorMode)}/parcels/${trackCode}/parcel_logs`
 
-const Parcel = ({ trackCode, date, postStatus, isEditorMode, deleteParcel }) => (
+const Parcel = ({ trackCode, phone, date, postStatus, isEditorMode, deleteParcel }) => (
   <div className={postStatus === 'received' ? 'muted' : ''}>
     <Media.Body>
       <Media.Heading>
         <Link to={urlForLog(isEditorMode, trackCode)}>{trackCode}</Link>
       </Media.Heading>
+      <div>{`Phone: ${phone}`}</div>
       <div>
         { isEditorMode ?
-          <Link to={urlForEdit(isEditorMode, trackCode)}>Edit</Link>
+          <Link className="media__link" to={urlForEdit(isEditorMode, trackCode)}>Edit</Link>
           : ''
         }
         <span className="date">{date}</span>
@@ -52,6 +53,7 @@ Parcel.propTypes = {
   trackCode: PropTypes.string.isRequired,
   postStatus: PropTypes.string.isRequired,
   deleteParcel: PropTypes.func.isRequired,
+  phone: PropTypes.number,
   isEditorMode: PropTypes.bool,
   date: PropTypes.string,
 }

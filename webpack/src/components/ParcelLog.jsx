@@ -22,10 +22,10 @@ const ParcelLog = ({ msg, postStatus, date, deleteParcelLog, isEditorMode, track
       <Media.Heading>{msg}</Media.Heading>
       {
         isEditorMode ?
-          <Link to={urlForEdit(isEditorMode, trackCode, id)}>Edit</Link>
+          <Link className="media__link" to={urlForEdit(isEditorMode, trackCode, id)}>Edit</Link>
         : ''
       }
-      <span className="date">{date}</span>
+      <span className="media__date">{date}</span>
     </Media.Body>
     <Media.Right>
       { isEditorMode ?
