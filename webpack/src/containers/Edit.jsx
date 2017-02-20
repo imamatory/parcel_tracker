@@ -40,9 +40,6 @@ class Edit extends React.Component {
             onSubmitAction={onSubmitAction}
           />
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={this.close}>Close</Button>
-        </Modal.Footer>
       </Modal>
     )
   }
