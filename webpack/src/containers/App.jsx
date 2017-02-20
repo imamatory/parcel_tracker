@@ -28,17 +28,18 @@ const App = ({ children, isEditorMode, resetUser, isUserLoggedIn }) =>
         <Navbar.Collapse>
           <Nav pullRight>
             {
-              isEditorMode || isUserLoggedIn ?
-                <NavItem onClick={resetUser}>
-                  <span className="navbar__link">
-                    { isEditorMode ? 'Switch to user' : 'Exit' }
-                  </span>
-                </NavItem> : ''
-            }{
               !isEditorMode ?
                 <NavItem onClick={forwardToManage}>
                   <span className="navbar__link">
-                    {'Edit'}
+                    {'Switch to manager'}
+                  </span>
+                </NavItem> : ''
+            }
+            {
+              isEditorMode || isUserLoggedIn ?
+                <NavItem onClick={resetUser}>
+                  <span className="navbar__link">
+                    { isEditorMode ? 'Switch to user' : 'Logout' }
                   </span>
                 </NavItem> : ''
             }
