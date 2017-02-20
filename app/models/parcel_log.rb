@@ -10,14 +10,8 @@ class ParcelLog < ApplicationRecord
   validates :parcel_id, presence: true
   validates :msg, presence: true
 
-  validates_each :post_status do |record, attr, value|
-    unless value.nil?
-      statuses = Parcel.post_statuses
-      if record.parcel && statuses[record.parcel.post_status] > statuses[value]
-        record.errors.add(attr, 'has wrong status transition')
-      end
-    end
-  end
+  include ActiveModel::Validations
+  validates_with ParcelLogPostStatusValidator
 
   after_save :update_parcel_post_status
   after_destroy :set_previous_parcel_post_status

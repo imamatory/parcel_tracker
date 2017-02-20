@@ -8,13 +8,12 @@ class Parcel < ApplicationRecord
   default_scope { order('created_at DESC') }
 
   validates :phone, presence: true, numericality: { only_integer: true }
-  validates :track_code, presence: true, uniqueness: true
+  validates :track_code, presence: true,
+            uniqueness: true,
+            format: { with: /\A[a-zA-Z0-9]+\z/, message: 'only allows letters and numbers' }
 
-  validates_each :post_status do |record, attr, value|
-    if Parcel.post_statuses[record.post_status] > Parcel.post_statuses[value]
-      record.errors.add(attr, 'wrong status transition')
-    end
-  end
+  include ActiveModel::Validations
+  validates_with ParcelPostStatusValidator
 
   validates_each :track_code do |record, attr, value|
     if record.track_code_changed? && record.persisted?
