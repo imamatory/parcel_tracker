@@ -12,7 +12,7 @@ const FieldForm = (props) => {
   }
 
   return (
-    <FormGroup controlId={input.name} validationState={meta.error ? 'error' : null}>
+    <FormGroup controlId={input.name} validationState={meta.error && meta.touched ? 'error' : null}>
       <ControlLabel>{children}</ControlLabel>
       { optionList ?
         <Field {...controlProps} onBlur={() => input.onBlur(input.value)} className="form-control">

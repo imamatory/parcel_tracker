@@ -7,9 +7,19 @@ import { Button, Col } from 'react-bootstrap'
 import FieldForm from '../components/FieldForm'
 import { submitUserData } from '../actions'
 
+const validate = (values) => {
+  const errors = {}
+  if (!values.phone) {
+    errors.phone = 'can not be empry'
+  }
+  if (!values.trackCode) {
+    errors.trackCode = 'can not be empry'
+  }
+  return errors
+}
 
 const ParcelLogForm = (props) => {
-  const { handleSubmit, pristine, submitting } = props
+  const { handleSubmit, pristine, invalid, submitting } = props
 
   return (
     <Col xs={10} sm={6} xsOffset={1} smOffset={3}>
@@ -21,7 +31,7 @@ const ParcelLogForm = (props) => {
           {'Track code'}
         </Field>
         <div>
-          <Button type="submit" disabled={pristine || submitting}>Submit</Button>
+          <Button type="submit" disabled={pristine || invalid || submitting}>Submit</Button>
         </div>
       </form>
     </Col>
@@ -30,6 +40,7 @@ const ParcelLogForm = (props) => {
 
 ParcelLogForm.propTypes = {
   pristine: PropTypes.bool.isRequired,
+  invalid: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 }
@@ -41,6 +52,7 @@ export default connect(
   })
 )(
   reduxForm({
+    validate,
     form: 'userData',
   }
 )(ParcelLogForm))
