@@ -32,8 +32,7 @@ const FieldForm = (props) => {
 }
 
 FieldForm.propTypes = {
-  // touched: PropTypes.bool,
-  // error: PropTypes.string,
+  disabled: PropTypes.string,
   type: PropTypes.string,
   input: PropTypes.object,
   meta: PropTypes.object,

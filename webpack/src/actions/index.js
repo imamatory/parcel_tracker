@@ -61,3 +61,4 @@ export const submitParcelForm = (method, id = {}) => data => action(types.SUBMIT
 export const setEditorMode = () => action(types.SET_EDITOR_MODE)
 export const submitUserData = data => action(types.SUBMIT_USER_DATA, data)
 export const resetUserData = () => action(types.RESET_USER)
+export const setPage = pageInfo => action(types.SET_PAGE, pageInfo)

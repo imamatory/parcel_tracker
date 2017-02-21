@@ -17,6 +17,9 @@ export const SUBMIT_ENTITY_FORM = 'SUBMIT_ENTITY_FORM'
 export const SUBMIT_USER_DATA = 'SUBMIT_USER_DATA'
 export const RESET_USER = 'RESET_USER'
 export const START_POLL_ENTITIES = 'START_POLL_ENTITIES'
+export const SET_PAGE = 'SET_PAGE'
+export const NEXT_PAGE = 'NEXT_PAGE'
+export const PREVIOUS_PAGE = 'PREVIOUS_PAGE'
 
 // Complex types
 export const ENTITIES_LIST = createRequestTypes(FETCH_ENTITIES_LIST)

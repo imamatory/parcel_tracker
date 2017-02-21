@@ -7,6 +7,7 @@ export const getParcelLogById = id => state => getParcelLogs(state)[id]
 export const getIsFetching = state => state.isFetching
 export const getIsEditorMode = state => state.isEditorMode
 export const getUserData = state => state.userData
+export const getPageInfo = state => state.pageInfo
 
 export const getParcelIds = state => state.lists.parcels
 export const getParcelLogIds = state => state.lists.parcelLogs.logs

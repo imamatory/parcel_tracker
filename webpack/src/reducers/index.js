@@ -78,6 +78,41 @@ const userData = (state = {}, action) => {
   }
 }
 
+const pageInitial = {
+  page: 1,
+  count: null,
+}
+
+const pageInfo = (state = pageInitial, action) => {
+  switch (action.type) {
+    case types.SET_PAGE:
+    case types.FETCH_ENTITIES_LIST.SUCCESS:
+      if (action.pageInfo) {
+        const { page, count } = action.pageInfo
+        return { count,
+          page,
+        }
+      }
+      return state
+    case types.NEXT_PAGE:
+      return { ...state,
+        page: state.page + 1,
+      }
+    case types.PREVIOUS_PAGE:
+      return { ...state,
+        page: Math.max(1, state - 1),
+      }
+    case types.RESET_USER:
+    case types.SET_EDITOR_MODE:
+      return {
+        page: Math.max(1, state - 1),
+        from: null,
+      }
+    default:
+      return state
+  }
+}
+
 const submitErrorsReducer = (state, action) => {
   switch (action.type) {
     case types.SUBMIT_FORM.FAILURE:
@@ -112,6 +147,7 @@ const rootReducer = combineReducers({
   form,
   isEditorMode,
   userData,
+  pageInfo,
   lists: combineReducers({
     parcels: listsParsers,
     parcelLogs: listsParserLogs,

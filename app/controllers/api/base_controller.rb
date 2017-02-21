@@ -2,6 +2,8 @@ require 'camel_json'
 
 module Api
   class BaseController < ApplicationController
+    PER_PAGE = 30
+
     include CamelJson
 
     respond_to :json
@@ -15,9 +17,10 @@ module Api
       plural_resource_name = "@#{resource_name.pluralize}"
       resources = resource_scope.where(resource_params)
                       .page(page_params[:page])
-                      .per(page_params[:page_size])
+                      .per(PER_PAGE)
       instance_variable_set(plural_resource_name, resources)
 
+      @page_count = (resource_scope.count.to_f / PER_PAGE).ceil
       respond_with instance_variable_get(plural_resource_name)
     end
 

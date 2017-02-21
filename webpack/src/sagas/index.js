@@ -4,7 +4,8 @@ import { browserHistory } from 'react-router'
 
 import * as actions from '../actions'
 import * as types from '../actions/Types'
-import { getUserData, getIsUserLoggedIn, getParcelLogTrackCode } from '../store/selectors'
+import { getUserData, getIsUserLoggedIn, getParcelLogTrackCode,
+         getPageInfo } from '../store/selectors'
 import { API_FETCH_DELAY } from '../constants'
 
 
@@ -12,10 +13,10 @@ const forwardTo = (url) => {
   browserHistory.push(url)
 }
 
-const injectUserData = (obj, userData) =>
+const injectParamsData = (obj, ...rest) =>
   Object.assign({}, obj, {
     data: {
-      ...userData,
+      ...Object.assign({}, ...rest.map(i => ({ ...i }))),
     },
   })
 
@@ -36,14 +37,16 @@ function* fetchEntity(action) {
 
 function* callFetchEntity(action) {
   const { isUserDataNeeded } = action
+  let userData = {}
   const isLoggedIn = yield select(getIsUserLoggedIn)
+  const pageData = yield select(getPageInfo)
 
   if (isLoggedIn && isUserDataNeeded) {
-    const userData = yield select(getUserData)
-    yield call(fetchEntity, injectUserData(action, userData))
-  } else {
-    yield call(fetchEntity, action)
+    userData = yield select(getUserData)
   }
+  console.log(injectParamsData(action, userData, pageData));
+
+  yield call(fetchEntity, injectParamsData(action, userData, pageData))
 }
 
 function* watchCallApiAsync() {

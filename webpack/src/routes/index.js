@@ -1,11 +1,22 @@
 import { browserHistory } from 'react-router'
 
 import { App, ParcelsList, ParcelLogsList, UserAuthForm } from '../containers/'
-import { setEditorMode } from '../actions'
+import { setEditorMode, setPage } from '../actions'
 import { getIsUserLoggedIn } from '../store/selectors'
 
 const enableEditorMode = (dispatch) => {
   dispatch(setEditorMode())
+}
+
+const setCurrentPage = dispatch => (routeParams) => {
+  const page = routeParams.location.query.page || 1
+  if (page) {
+    dispatch(setPage({
+      pageInfo: {
+        page,
+      },
+    }))
+  }
 }
 
 const verifyUserAuth = (store) => {
@@ -26,7 +37,7 @@ export const routes = store => [{
     {
       path: 'parcels(/)',
       component: ParcelsList,
-      onEnter: () => verifyUserAuth(store),
+      onEnter: () => { verifyUserAuth(store); setPage() },
     },
     {
       path: 'parcels/:trackCode/parcel_logs(/)',
@@ -45,6 +56,7 @@ export const routes = store => [{
         {
           path: 'parcels(/)(:trackCode)',
           component: ParcelsList,
+          onEnter: setCurrentPage(store.dispatch),
         },
         {
           path: 'parcels/:trackCode/parcel_logs(/)(:id)',
