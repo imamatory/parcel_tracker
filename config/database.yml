@@ -25,3 +25,6 @@ test:
 production:
   <<: *default
   database: parcel_tracker
+
+production:
+  url: <%= ENV['DATABASE_URL'] %>
