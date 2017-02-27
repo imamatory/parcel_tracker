@@ -51,7 +51,7 @@ class ParcelsList extends React.Component {
 
   render() {
     const { items, fetchItems, isFetching, routeAction,
-      router, isEditorMode, userData, currentParcel } = this.props
+      router, isEditorMode, userData, currentParcel, pageInfo } = this.props
 
     return (
       <div>

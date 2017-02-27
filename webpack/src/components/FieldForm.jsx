@@ -32,7 +32,7 @@ const FieldForm = (props) => {
 }
 
 FieldForm.propTypes = {
-  disabled: PropTypes.string,
+  disabled: PropTypes.bool,
   type: PropTypes.string,
   input: PropTypes.object,
   meta: PropTypes.object,
