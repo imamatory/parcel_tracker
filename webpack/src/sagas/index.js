@@ -14,9 +14,10 @@ const forwardTo = (url) => {
 }
 
 const injectParamsData = (obj, ...rest) =>
-  Object.assign({}, obj, {
+  ({
+    ...obj,
     data: {
-      ...Object.assign({}, ...rest.map(i => ({ ...i }))),
+      ...Object.assign({}, obj.data, ...rest),
     },
   })
 
@@ -44,7 +45,6 @@ function* callFetchEntity(action) {
   if (isLoggedIn && isUserDataNeeded) {
     userData = yield select(getUserData)
   }
-  console.log(injectParamsData(action, userData, pageData));
 
   yield call(fetchEntity, injectParamsData(action, userData, pageData))
 }
@@ -107,7 +107,7 @@ export function* watchPollEntityApi() {
 
 export default function* rootSaga() {
   yield [
-    fork(watchPollEntityApi),
+    // fork(watchPollEntityApi),
     fork(watchCallApiAsync),
     fork(watchSubmit),
     fork(watchAfterSubmitRedirect),

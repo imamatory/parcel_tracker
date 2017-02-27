@@ -6,8 +6,6 @@ module Api
 
     def resource_set(resource = nil)
       resource ||= Parcel.find_by!(track_code: params[:id])
-        .page(params[:page])
-        .per(PER_PAGE)
       instance_variable_set("@#{resource_name}", resource)
     end
 
